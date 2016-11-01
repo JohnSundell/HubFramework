@@ -40,13 +40,9 @@ import HubFramework
             featureTitle: "Beautiful Cities"
         )
         
-        prepareAndPush(viewController: viewController, animated: false)
+        prepareAndPresent(viewController: viewController)
         
         return true
-    }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        return open(viewURI: url, animated: true)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -60,7 +56,7 @@ import HubFramework
     // MARK: - HUBLiveServiceDelegate
     
     func liveService(_ liveService: HUBLiveService, didCreateViewController viewController: UIViewController) {
-        prepareAndPush(viewController: viewController, animated: true)
+        prepareAndPresent(viewController: viewController)
     }
     
     // MARK: - Private
@@ -98,23 +94,11 @@ import HubFramework
         #endif
     }
     
-    // MARK: - Opening view URIs
-    
-    @discardableResult private func open(viewURI: URL, animated: Bool) -> Bool {
-        guard let viewController = hubManager?.viewControllerFactory.createViewController(forViewURI: viewURI) else {
-            return false
-        }
-        
-        prepareAndPush(viewController: viewController, animated: animated)
-        
-        return true
-    }
-    
     // MARK: - View controller handling
     
-    private func prepareAndPush(viewController: UIViewController, animated: Bool) {
+    private func prepareAndPresent(viewController: UIViewController) {
         viewController.view.backgroundColor = .white
-        navigationController?.pushViewController(viewController, animated: animated)
+        navigationController?.viewControllers = [viewController]
     }
 }
 

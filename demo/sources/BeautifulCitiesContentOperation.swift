@@ -24,6 +24,7 @@ class BeautifulCitiesContentOperation: NSObject, HUBContentOperation {
                     let imageBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "user-\(index)")
                     imageBuilder.title = user.name
                     imageBuilder.mainImageURL = user.imageUrl
+                    imageBuilder.componentName = DefaultComponentNames.circular
                 }
             }
         }

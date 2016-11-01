@@ -12,6 +12,9 @@
 		527BDB101DC905E3009F4E96 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527BDB0F1DC905E3009F4E96 /* City.swift */; };
 		527BDB121DC906B9009F4E96 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527BDB111DC906B9009F4E96 /* User.swift */; };
 		527BDB141DC9091B009F4E96 /* Array+Split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527BDB131DC9091B009F4E96 /* Array+Split.swift */; };
+		527BDB161DC90CE6009F4E96 /* CircularComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527BDB151DC90CE6009F4E96 /* CircularComponent.swift */; };
+		527BDB181DC90D9A009F4E96 /* CGFloat+Divide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527BDB171DC90D9A009F4E96 /* CGFloat+Divide.swift */; };
+		527BDB1A1DC911B9009F4E96 /* PromotionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527BDB191DC911B9009F4E96 /* PromotionComponent.swift */; };
 		8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */; };
 		8A42E0B21D8C3779004FAC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */; };
 		8A42E0B31D8C3779004FAC33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */; };
@@ -60,6 +63,9 @@
 		527BDB0F1DC905E3009F4E96 /* City.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		527BDB111DC906B9009F4E96 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		527BDB131DC9091B009F4E96 /* Array+Split.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Split.swift"; sourceTree = "<group>"; };
+		527BDB151DC90CE6009F4E96 /* CircularComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularComponent.swift; sourceTree = "<group>"; };
+		527BDB171DC90D9A009F4E96 /* CGFloat+Divide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Divide.swift"; sourceTree = "<group>"; };
+		527BDB191DC911B9009F4E96 /* PromotionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionComponent.swift; sourceTree = "<group>"; };
 		8A42E0921D8C36A3004FAC33 /* HubFrameworkDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HubFrameworkDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -184,6 +190,8 @@
 				8AD5EDB61D9A7D50004B2CEA /* SearchBarComponent.swift */,
 				8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */,
 				8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */,
+				527BDB151DC90CE6009F4E96 /* CircularComponent.swift */,
+				527BDB191DC911B9009F4E96 /* PromotionComponent.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -193,6 +201,7 @@
 			children = (
 				8AD14FEC1D9958A90008E182 /* UIImageView+Animation.swift */,
 				527BDB131DC9091B009F4E96 /* Array+Split.swift */,
+				527BDB171DC90D9A009F4E96 /* CGFloat+Divide.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -305,7 +314,9 @@
 				8AD72F571D9AC22600E4B427 /* ImageComponent.swift in Sources */,
 				8A42E1F91D8C476C004FAC33 /* ComponentFallbackHandler.swift in Sources */,
 				527BDB121DC906B9009F4E96 /* User.swift in Sources */,
+				527BDB1A1DC911B9009F4E96 /* PromotionComponent.swift in Sources */,
 				8AB850961DBF9DE300AFAFD0 /* CarouselComponent.swift in Sources */,
+				527BDB181DC90D9A009F4E96 /* CGFloat+Divide.swift in Sources */,
 				527BDB141DC9091B009F4E96 /* Array+Split.swift in Sources */,
 				8AD5EDCE1D9AA294004B2CEA /* LabelComponent.swift in Sources */,
 				8A42E1FB1D8C4CEB004FAC33 /* RowComponent.swift in Sources */,
@@ -314,6 +325,7 @@
 				8AD5EDB91D9A7DEC004B2CEA /* DefaultComponentFactory.swift in Sources */,
 				8AD5EDC81D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift in Sources */,
 				527BDB101DC905E3009F4E96 /* City.swift in Sources */,
+				527BDB161DC90CE6009F4E96 /* CircularComponent.swift in Sources */,
 				8AD14FED1D9958A90008E182 /* UIImageView+Animation.swift in Sources */,
 				8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */,
 				527BDB0B1DC90524009F4E96 /* BeautifulCitiesContentOperation.swift in Sources */,
