@@ -42,11 +42,6 @@ import HubFramework
         window.makeKeyAndVisible()
         
         registerDefaultComponentFactory()
-        registerAndOpenRootFeature()
-        registerGitHubSearchFeature()
-        registerPrettyPicturesFeature()
-        registerReallyLongListFeature()
-        registerTodoListFeature()
         startLiveService()
         
         return true
@@ -81,83 +76,6 @@ import HubFramework
     
     private func registerDefaultComponentFactory() {
         hubManager.componentRegistry.register(componentFactory: DefaultComponentFactory(), namespace: DefaultComponentFactory.namespace)
-    }
-    
-    // MARK: - Feature registrations
-    
-    private func registerAndOpenRootFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "root",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .rootViewURI),
-            title: "Root feature",
-            contentOperationFactories: [RootContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-        
-        open(viewURI: .rootViewURI, animated: false)
-    }
-    
-    private func registerGitHubSearchFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "gitHubSearch",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .gitHubSearchViewURI),
-            title: "GitHub Search",
-            contentOperationFactories: [GitHubSearchContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: hubManager.jsonSchemaRegistry.gitHubSearchSchemaIdentifier,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-        
-        hubManager.jsonSchemaRegistry.registerGitHubSearchSchema()
-    }
-    
-    private func registerPrettyPicturesFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "prettyPictures",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .prettyPicturesViewURI),
-            title: "Pretty Pictures",
-            contentOperationFactories: [PrettyPicturesContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-    }
-    
-    private func registerReallyLongListFeature() {
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "reallyLongList",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .reallyLongListViewURI),
-            title: "Really Long List",
-            contentOperationFactories: [ReallyLongListContentOperationFactory()],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-    }
-    
-    private func registerTodoListFeature() {
-        let contentOperationFactory = HUBBlockContentOperationFactory() { _ in
-            return [TodoListContentOperation()]
-        }
-        
-        hubManager.featureRegistry.registerFeature(
-            withIdentifier: "todoList",
-            viewURIPredicate: HUBViewURIPredicate(viewURI: .todoListViewURI),
-            title: "Todo List",
-            contentOperationFactories: [contentOperationFactory],
-            contentReloadPolicy: nil,
-            customJSONSchemaIdentifier: nil,
-            actionHandler: nil,
-            viewControllerScrollHandler: nil
-        )
-        
-        hubManager.actionRegistry.register(TodoListActionFactory(), forNamespace: TodoListActionFactory.namespace)
     }
     
     private func startLiveService() {
