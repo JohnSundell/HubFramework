@@ -25,24 +25,22 @@ import HubFramework
 /// The delegate of the application
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate, HUBLiveServiceDelegate {
     var window: UIWindow?
-    var navigationController: UINavigationController?
+    var navigationController: UINavigationController!
     var hubManager: HUBManager!
     
     // MARK: - UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
+        setup()
         
-        self.window = window
-        navigationController = UINavigationController()
+        let viewController = hubManager.viewControllerFactory.createViewController(
+            forViewURI: URL(string: "beautiful-cities:root")!,
+            contentOperations: [BeautifulCitiesContentOperation()],
+            featureIdentifier: "beautiful-cities",
+            featureTitle: "Beautiful Cities"
+        )
         
-        hubManager = makeHubManager()
-        
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-        
-        registerDefaultComponentFactory()
-        startLiveService()
+        prepareAndPush(viewController: viewController, animated: false)
         
         return true
     }
@@ -66,6 +64,21 @@ import HubFramework
     }
     
     // MARK: - Private
+    
+    private func setup() {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        
+        self.window = window
+        navigationController = UINavigationController()
+        
+        hubManager = makeHubManager()
+        
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+        
+        registerDefaultComponentFactory()
+        startLiveService()
+    }
     
     private func makeHubManager() -> HUBManager {
         return HUBManager(
