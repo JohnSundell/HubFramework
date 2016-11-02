@@ -18,7 +18,7 @@ class PromotionComponent: NSObject, HUBComponentWithImageHandling, HUBComponentV
     }
 
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
-        return CGSize(width: containerViewSize.width, height: containerViewSize.width / 3)
+        return CGSize(width: containerViewSize.width, height: containerViewSize.width / 2)
     }
 
     func prepareViewForReuse() {
