@@ -1,3 +1,5 @@
+**This is sample code from my talk about “Component-driven UIs” at Mobile Era in Olso, Norway. To actually use the Hub Framework - go to the [main Spotify repo](https://github.com/spotify/hubframework).**
+
 <img alt="The Hub Framework" src="readme-banner.jpg" width="100%" max-width=1008>
 
 [![Build Status](https://travis-ci.org/spotify/HubFramework.svg?branch=master)](https://travis-ci.org/spotify/HubFramework/branches)
