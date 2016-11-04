@@ -23,7 +23,7 @@ class BeautifulCitiesContentOperation: NSObject, HUBContentOperation {
                 User.loadAll().enumerated().forEach { (index, user) in
                     let imageBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "user-\(index)")
                     imageBuilder.title = user.name
-                    imageBuilder.mainImageURL = user.imageUrl
+                    imageBuilder.mainImage = user.image
                     imageBuilder.componentName = DefaultComponentNames.circular
                 }
             }

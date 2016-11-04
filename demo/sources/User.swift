@@ -1,17 +1,17 @@
-import Foundation
+import UIKit
 
 struct User {
     var name: String
-    var imageUrl: URL
+    var image: UIImage
 }
 
 extension User {
     static func loadAll() -> [User] {
         return [
-            User(name: "Julia", imageUrl: URL(string: "http://localhost:8000/images/user-0.jpg")!),
-            User(name: "Mathew", imageUrl: URL(string: "http://localhost:8000/images/user-1.jpg")!),
-            User(name: "Caroline", imageUrl: URL(string: "http://localhost:8000/images/user-2.jpg")!),
-            User(name: "David", imageUrl: URL(string: "http://localhost:8000/images/user-3.jpg")!)
+            User(name: "Julia", image: UIImage(named: "user-0")!),
+            User(name: "Mathew", image: UIImage(named: "user-1")!),
+            User(name: "Caroline", image: UIImage(named: "user-2")!),
+            User(name: "David", image: UIImage(named: "user-3")!)
         ]
     }
 }
