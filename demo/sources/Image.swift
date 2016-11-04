@@ -7,8 +7,8 @@ struct Image {
 extension Image {
     static func loadAll() -> [Image] {
         return [
-            Image(url: URL(string: "http://localhost:8000/images/tokyo.jpg")!),
-            Image(url: URL(string: "http://localhost:8000/images/gothenburg.jpg")!)
+            Image(url: URL(string: "https://spotify.github.io/HubFramework/resources/getting-started-tokyo.jpg")!),
+            Image(url: URL(string: "https://spotify.github.io/HubFramework/resources/getting-started-gothenburg.jpg")!)
         ]
     }
 }
