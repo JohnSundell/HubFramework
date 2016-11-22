@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     self.component.view.frame = self.contentView.bounds;
 }
 

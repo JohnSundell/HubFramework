@@ -189,6 +189,14 @@
     return NO;
 }
 
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+        resizeViewWithDuration:(NSTimeInterval)duration
+        newSize:(CGSize)newSize
+        animationBlock:(nullable dispatch_block_t)animationBlock
+{
+    
+}
+
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
 {
     // No-op

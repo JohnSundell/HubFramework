@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Layout object used by collection views within the Hub Framework
 @interface HUBCollectionViewLayout : UICollectionViewLayout
 
+@property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
+@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
+
 /**
  *  Initialize an instance of this class with its required dependencies
  *
@@ -51,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)computeForCollectionViewSize:(CGSize)collectionViewSize
                            viewModel:(id<HUBViewModel>)viewModel
                                 diff:(nullable HUBViewModelDiff *)diff;
+
+- (void)addViewSize:(CGSize)viewSize forComponentModelIdentifier:(NSString *)identifier;
 
 @end
 

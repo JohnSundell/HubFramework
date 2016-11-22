@@ -21,6 +21,17 @@
 
 #import "HUBViewController.h"
 
+@protocol HUBImageLoader;
+@protocol HUBContentReloadPolicy;
+@protocol HUBComponentLayoutManager;
+@protocol HUBActionHandler;
+@protocol HUBViewControllerScrollHandler;
+@protocol HUBComponentRegistry;
+@class HUBViewModelLoaderImplementation;
+@class HUBCollectionViewFactory;
+@class HUBInitialViewModelRegistry;
+@class HUBActionRegistryImplementation;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Extension enabling a HUBViewController instance to be initialized by the framework

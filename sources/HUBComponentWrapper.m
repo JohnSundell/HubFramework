@@ -25,6 +25,7 @@
 #import "HUBComponentWithRestorableUIState.h"
 #import "HUBComponentViewObserver.h"
 #import "HUBComponentWithImageHandling.h"
+#import "HUBComponentAnimationPerformer.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentActionObserver.h"
 #import "HUBComponentActionPerformer.h"
@@ -37,7 +38,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HUBComponentWrapper () <HUBComponentChildDelegate, HUBComponentResizeObservingViewDelegate, HUBActionPerformer, UIGestureRecognizerDelegate>
+@interface HUBComponentWrapper () <
+    HUBComponentChildDelegate,
+    HUBComponentResizeObservingViewDelegate,
+    HUBAnimationPerformer,
+    HUBActionPerformer,
+    UIGestureRecognizerDelegate
+>
 
 @property (nonatomic, strong, readwrite) id<HUBComponentModel> model;
 @property (nonatomic, assign) BOOL viewHasAppearedSinceLastModelChange;
@@ -87,6 +94,10 @@ NS_ASSUME_NONNULL_BEGIN
         
         if ([_component conformsToProtocol:@protocol(HUBComponentWithChildren)]) {
             ((id<HUBComponentWithChildren>)_component).childDelegate = self;
+        }
+        
+        if ([_component conformsToProtocol:@protocol(HUBComponentAnimationPerformer)]) {
+            ((id<HUBComponentAnimationPerformer>)_component).animationPerformer = self;
         }
         
         if ([_component conformsToProtocol:@protocol(HUBComponentActionPerformer)]) {
@@ -392,6 +403,20 @@ NS_ASSUME_NONNULL_BEGIN
     [(id<HUBComponentViewObserver>)self.component viewDidResize];
 }
 
+#pragma mark - HUBAnimationPerformer
+
+- (void)performResizeAnimation:(HUBResizeAnimation *)animation
+{
+    [self.delegate performResizeAnimation:animation];
+}
+
+#pragma mark - HUBActionPerformer
+
+- (BOOL)performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
+{
+    return [self.delegate componentWrapper:self performActionWithIdentifier:identifier customData:customData];
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -426,13 +451,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return YES;
-}
-
-#pragma mark - HUBActionPerformer
-
-- (BOOL)performActionWithIdentifier:(HUBIdentifier *)identifier customData:(nullable NSDictionary<NSString *, id> *)customData
-{
-    return [self.delegate componentWrapper:self performActionWithIdentifier:identifier customData:customData];
 }
 
 #pragma mark - Gesture recognizer handling

@@ -67,6 +67,7 @@
 #import "HUBComponentWithSelectionState.h"
 #import "HUBComponentContentOffsetObserver.h"
 #import "HUBComponentViewObserver.h"
+#import "HUBComponentAnimationPerformer.h"
 #import "HUBComponentActionObserver.h"
 #import "HUBComponentActionPerformer.h"
 #import "HUBComponentCollectionViewCell.h"
@@ -93,6 +94,10 @@
 #import "HUBImageLoader.h"
 #import "HUBIcon.h"
 #import "HUBIconImageResolver.h"
+
+// Animations
+#import "HUBAnimationPerformer.h"
+#import "HUBResizeAnimation.h"
 
 // Actions
 #import "HUBAction.h"

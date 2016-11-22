@@ -19,8 +19,9 @@
  *  under the License.
  */
 
+#import "HUBHeaderMacros.h"
 
-#import "HUBViewModel.h"
+@protocol HUBViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -52,8 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)diffFromViewModel:(id<HUBViewModel>)fromViewModel
                       toViewModel:(id<HUBViewModel>)toViewModel;
 
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithInserts:(NSIndexSet *)inserts
+                        deletes:(NSIndexSet *)deletes
+                        reloads:(NSIndexSet *)reloads HUB_DESIGNATED_INITIALIZER;
 
 @end
 

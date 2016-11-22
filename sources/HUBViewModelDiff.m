@@ -19,11 +19,12 @@
  *  under the License.
  */
 
-
 #import "HUBViewModelDiff.h"
-#import "HUBComponentModel.h"
 
 #import <UIKit/UIKit.h>
+
+#import "HUBViewModel.h"
+#import "HUBComponentModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

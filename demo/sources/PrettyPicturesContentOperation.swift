@@ -44,6 +44,15 @@ class PrettyPicturesContentOperation: NSObject, HUBContentOperation {
             pictureBuilder.targetBuilder.uri = targetURI(forPictureIdentifier: identifier)
         }
         
+        let drawerBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "drawer")
+        drawerBuilder.title = "Hidden image - tap to reveal!"
+        drawerBuilder.componentName = DefaultComponentNames.drawer
+        
+        let drawerPictureBuilder = drawerBuilder.builderForChild(withIdentifier: "drawer-picture")
+        drawerPictureBuilder.componentName = DefaultComponentNames.image
+        drawerPictureBuilder.mainImageURL = imageURL(forPictureIdentifier: "tokyo")
+        drawerPictureBuilder.customData = [ImageComponentCustomDataKeys.fullWidth: true]
+        
         for (index, identifier) in pictureIdentifiers.enumerated() {
             let pictureBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "picture-" + identifier)
             pictureBuilder.componentName = DefaultComponentNames.image

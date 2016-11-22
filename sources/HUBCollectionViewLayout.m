@@ -35,11 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HUBCollectionViewLayout () <HUBComponentChildDelegate>
 
 @property (nonatomic, strong, nullable) id<HUBViewModel> viewModel;
-@property (nonatomic, strong, readonly) id<HUBComponentRegistry> componentRegistry;
-@property (nonatomic, strong, readonly) id<HUBComponentLayoutManager> componentLayoutManager;
 @property (nonatomic, strong, readonly) NSMutableDictionary<HUBIdentifier *, id<HUBComponent>> *componentCache;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *layoutAttributesByIndexPath;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSMutableSet<NSIndexPath *> *> *indexPathsByVerticalGroup;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, NSValue *> *updatedViewSizesByComponentModelIdentifier;
 @property (nonatomic, strong, nullable) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *previousLayoutAttributesByIndexPath;
 @property (nonatomic, strong, nullable) HUBViewModelDiff *lastViewModelDiff;
 
@@ -60,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
         _componentCache = [NSMutableDictionary new];
         _layoutAttributesByIndexPath = [NSMutableDictionary new];
         _indexPathsByVerticalGroup = [NSMutableDictionary new];
+        _updatedViewSizesByComponentModelIdentifier = [NSMutableDictionary new];
     }
     
     return self;
@@ -168,49 +168,9 @@ NS_ASSUME_NONNULL_BEGIN
                                       collectionViewSize:collectionViewSize];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+- (void)addViewSize:(CGSize)viewSize forComponentModelIdentifier:(NSString *)identifier
 {
-    if (self.previousLayoutAttributesByIndexPath == nil || self.lastViewModelDiff == nil) {
-        return proposedContentOffset;
-    }
-
-    CGPoint offset = self.collectionView.contentOffset;
-    
-    NSInteger topmostVisibleIndex = NSNotFound;
-    
-    for (NSIndexPath *indexPath in [self.collectionView indexPathsForVisibleItems]) {
-        topmostVisibleIndex = MIN(topmostVisibleIndex, indexPath.item);
-    }
-    
-    if (topmostVisibleIndex == NSNotFound) {
-        topmostVisibleIndex = 0;
-    }
-    
-    for (NSIndexPath *indexPath in self.lastViewModelDiff.insertedBodyComponentIndexPaths) {
-        if (indexPath.item < topmostVisibleIndex) {
-            UICollectionViewLayoutAttributes *attributes = self.layoutAttributesByIndexPath[indexPath];
-            offset.y += CGRectGetHeight(attributes.frame);
-        }
-    }
-    
-    for (NSIndexPath *indexPath in self.lastViewModelDiff.deletedBodyComponentIndexPaths) {
-        if (indexPath.item <= topmostVisibleIndex) {
-            UICollectionViewLayoutAttributes *attributes = self.previousLayoutAttributesByIndexPath[indexPath];
-            offset.y -= CGRectGetHeight(attributes.frame);
-        }
-    }
-    
-    // Making sure the content offset doesn't go through the roof.
-    CGFloat const minContentOffset = -self.collectionView.contentInset.top;
-    offset.y = MAX(minContentOffset, offset.y);
-    // ...or beyond the bottom.
-    CGFloat maxContentOffset = MAX(self.contentSize.height + self.collectionView.contentInset.bottom - CGRectGetHeight(self.collectionView.frame), minContentOffset);
-    offset.y = MIN(maxContentOffset, offset.y);
-    
-    self.previousLayoutAttributesByIndexPath = nil;
-    self.lastViewModelDiff = nil;
-    
-    return offset;
+    self.updatedViewSizesByComponentModelIdentifier[identifier] = [NSValue valueWithCGSize:viewSize];
 }
 
 #pragma mark - HUBComponentChildDelegate
@@ -267,6 +227,51 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)collectionViewContentSize
 {
     return self.contentSize;
+}
+
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+{
+    if (self.previousLayoutAttributesByIndexPath == nil || self.lastViewModelDiff == nil) {
+        return proposedContentOffset;
+    }
+    
+    CGPoint offset = self.collectionView.contentOffset;
+    
+    NSInteger topmostVisibleIndex = NSNotFound;
+    
+    for (NSIndexPath *indexPath in [self.collectionView indexPathsForVisibleItems]) {
+        topmostVisibleIndex = MIN(topmostVisibleIndex, indexPath.item);
+    }
+    
+    if (topmostVisibleIndex == NSNotFound) {
+        topmostVisibleIndex = 0;
+    }
+    
+    for (NSIndexPath *indexPath in self.lastViewModelDiff.insertedBodyComponentIndexPaths) {
+        if (indexPath.item < topmostVisibleIndex) {
+            UICollectionViewLayoutAttributes *attributes = self.layoutAttributesByIndexPath[indexPath];
+            offset.y += CGRectGetHeight(attributes.frame);
+        }
+    }
+    
+    for (NSIndexPath *indexPath in self.lastViewModelDiff.deletedBodyComponentIndexPaths) {
+        if (indexPath.item <= topmostVisibleIndex) {
+            UICollectionViewLayoutAttributes *attributes = self.previousLayoutAttributesByIndexPath[indexPath];
+            offset.y -= CGRectGetHeight(attributes.frame);
+        }
+    }
+    
+    // Making sure the content offset doesn't go through the roof.
+    CGFloat const minContentOffset = -self.collectionView.contentInset.top;
+    offset.y = MAX(minContentOffset, offset.y);
+    // ...or beyond the bottom.
+    CGFloat maxContentOffset = MAX(self.contentSize.height + self.collectionView.contentInset.bottom - CGRectGetHeight(self.collectionView.frame), minContentOffset);
+    offset.y = MIN(maxContentOffset, offset.y);
+    
+    self.previousLayoutAttributesByIndexPath = nil;
+    self.lastViewModelDiff = nil;
+    
+    return offset;
 }
 
 #pragma mark - Private utilities
@@ -342,7 +347,15 @@ NS_ASSUME_NONNULL_BEGIN
                     collectionViewSize:(CGSize)collectionViewSize
 {
     CGRect componentViewFrame = CGRectZero;
-    componentViewFrame.size = [component preferredViewSizeForDisplayingModel:componentModel containerViewSize:collectionViewSize];
+    
+    NSValue * const updatedSizeValue = self.updatedViewSizesByComponentModelIdentifier[componentModel.identifier];
+    
+    if (updatedSizeValue != nil) {
+        componentViewFrame.size = updatedSizeValue.CGSizeValue;
+    } else {
+        componentViewFrame.size = [component preferredViewSizeForDisplayingModel:componentModel containerViewSize:collectionViewSize];
+    }
+    
     componentViewFrame.size.width = MIN(CGRectGetWidth(componentViewFrame), collectionViewSize.width);
     return componentViewFrame;
 }

@@ -23,20 +23,11 @@
 #import "HUBComponentLayoutTraits.h"
 #import "HUBComponentType.h"
 #import "HUBScrollPosition.h"
+#import "HUBAnimationPerformer.h"
 
 @protocol HUBViewModel;
 @protocol HUBComponentModel;
-@protocol HUBImageLoader;
-@protocol HUBContentReloadPolicy;
-@protocol HUBComponentLayoutManager;
-@protocol HUBActionHandler;
-@protocol HUBViewControllerScrollHandler;
-@protocol HUBComponentRegistry;
 @class HUBViewController;
-@class HUBViewModelLoaderImplementation;
-@class HUBCollectionViewFactory;
-@class HUBInitialViewModelRegistry;
-@class HUBActionRegistryImplementation;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -153,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  This view controller renders `HUBComponent` instances using a collection view. What components that are rendered
  *  are determined by `HUBContentOperation`s that build a `HUBViewModel`.
  */
-@interface HUBViewController : UIViewController
+@interface HUBViewController : UIViewController <HUBAnimationPerformer>
 
 /// The view controller's delegate. See `HUBViewControllerDelegate` for more information.
 @property (nonatomic, weak, nullable) id<HUBViewControllerDelegate> delegate;
@@ -171,6 +162,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Whether the view controller's content view is currently being scrolled
 @property (nonatomic, assign, readonly) BOOL isViewScrolling;
+
+#pragma mark - Performing hit testing and retrieving frames for components
 
 /**
  *  Return the frame used to render a body component at a given index
@@ -190,6 +183,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return An index, if a body component was found at the given point, or `NSNotFound`.
  */
 - (NSUInteger)indexOfBodyComponentAtPoint:(CGPoint)point;
+
+#pragma mark - Programmatic scrolling
 
 /**
  *  Scroll to a desired content offset.
@@ -222,6 +217,8 @@ NS_ASSUME_NONNULL_BEGIN
                        animated:(BOOL)animated
                      completion:(void (^ _Nullable)(NSIndexPath *))completion;
 
+#pragma mark - Retrieving visible component views
+
 /**
  *  Returns the views of the components of the given type that are currently visible on screen, keyed by their index path
  *
@@ -248,6 +245,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  getting all currently visible component views - use `visibleComponentViewsForComponentType:` instead.
  */
 - (nullable UIView *)visibleViewForComponentOfType:(HUBComponentType)componentType indexPath:(NSIndexPath *)indexPath;
+
+#pragma mark - Performing component selection
 
 /**
  *  Perform a programmatic selection of a component with a given model

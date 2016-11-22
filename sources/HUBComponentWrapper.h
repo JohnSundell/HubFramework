@@ -27,6 +27,7 @@
 #import "HUBComponentWithSelectionState.h"
 #import "HUBComponentWithScrolling.h"
 #import "HUBHeaderMacros.h"
+#import "HUBAnimationPerformer.h"
 
 @protocol HUBComponent;
 @protocol HUBComponentModel;
@@ -39,7 +40,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Delegate protocol for `HUBComponentWrapper`
-@protocol HUBComponentWrapperDelegate <NSObject>
+@protocol HUBComponentWrapperDelegate <HUBAnimationPerformer>
 
 /**
  *  Notify the delegate that a component wrapper will update its selection state
@@ -117,6 +118,11 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState;
 - (BOOL)componentWrapper:(HUBComponentWrapper *)componentWrapper
         performActionWithIdentifier:(HUBIdentifier *)identifier
         customData:(nullable NSDictionary<NSString *, id> *)customData;
+
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+        resizeViewWithDuration:(NSTimeInterval)duration
+        newSize:(CGSize)newSize
+        animationBlock:(nullable dispatch_block_t)animationBlock;
 
 /**
  *  Send a component wrapper to its reuse pool

@@ -203,6 +203,15 @@ import HubFramework
         viewController.delegate = navigationController
         viewController.view.backgroundColor = .white
         navigationController?.pushViewController(viewController, animated: animated)
+        
+        if viewController.featureIdentifier == "prettyPictures" {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                let animation = HUBResizeAnimation(duration: 3)
+                animation.addTargetViewSize(CGSize(width: 100, height: 100), for: viewController.viewModel!.bodyComponentModels[1])
+                animation.addTargetViewSize(CGSize(width: 150, height: 150), for: viewController.viewModel!.bodyComponentModels[2])
+                viewController.perform(animation)
+            });
+        }
     }
 }
 

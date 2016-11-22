@@ -519,6 +519,13 @@ NS_ASSUME_NONNULL_BEGIN
     [self.highlightedComponentWrapper updateViewForSelectionState:HUBComponentSelectionStateNone];
 }
 
+#pragma mark - HUBAnimationPerformer
+
+- (void)performResizeAnimation:(HUBResizeAnimation *)animation
+{
+    [self.viewModelRenderer performResizeAnimation:animation];
+}
+
 #pragma mark - HUBImageLoaderDelegate
 
 - (void)imageLoader:(id<HUBImageLoader>)imageLoader didLoadImage:(UIImage *)image forURL:(NSURL *)imageURL
@@ -657,6 +664,14 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
                         customIdentifier:identifier
                               customData:customData
                           componentModel:componentWrapper.model];
+}
+
+- (void)componentWrapper:(HUBComponentWrapper *)componentWrapper
+        resizeViewWithDuration:(NSTimeInterval)duration
+        newSize:(CGSize)newSize
+        animationBlock:(nullable dispatch_block_t)animationBlock
+{
+    
 }
 
 - (void)sendComponentWrapperToReusePool:(HUBComponentWrapper *)componentWrapper
@@ -876,14 +891,21 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
 - (void)reloadCollectionViewWithViewModel:(id<HUBViewModel>)viewModel animated:(BOOL)animated
 {
-    if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
-        self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                       componentLayoutManager:self.componentLayoutManager];
+    HUBCollectionViewLayout *collectionViewLayout;
+    
+    if ([self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
+        collectionViewLayout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
+    } else {
+        collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
+                                                                   componentLayoutManager:self.componentLayoutManager];
+        
+        self.collectionView.collectionViewLayout = collectionViewLayout;
     }
 
     if (self.viewModelRenderer == nil) {
         UICollectionView * const nonnullCollectionView = self.collectionView;
-        self.viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionView:nonnullCollectionView];
+        self.viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionView:nonnullCollectionView
+                                                                               layout:collectionViewLayout];
     }
 
     [self saveStatesForVisibleComponents];

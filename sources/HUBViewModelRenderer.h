@@ -20,22 +20,27 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "HUBViewModel.h"
+#import "HUBAnimationPerformer.h"
 #import "HUBHeaderMacros.h"
+
+@protocol HUBViewModel;
+@class HUBCollectionViewLayout;
+@class HUBComponentResizeAnimation;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  * A class used to render view models in a collection view.
  */
-@interface HUBViewModelRenderer : NSObject
+@interface HUBViewModelRenderer : NSObject <HUBAnimationPerformer>
 
 /**
  * Initializes a @c HUBViewModelRenderer with a provided collection view.
  *
  * @param collectionView The collection view to use for rendering.
  */
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView HUB_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCollectionView:(UICollectionView *)collectionView
+                                layout:(HUBCollectionViewLayout *)layout HUB_DESIGNATED_INITIALIZER;
 
 /** 
  * Renders the provided view model in the collection view.

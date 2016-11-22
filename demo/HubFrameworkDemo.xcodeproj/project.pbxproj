@@ -17,6 +17,7 @@
 		8A374CFF1DBE659E0013E592 /* TodoListActionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */; };
 		8A374D001DBE659E0013E592 /* TodoListAddAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */; };
 		8A374D011DBE659E0013E592 /* TodoListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */; };
+		8A398C411DE4AD4B0004798F /* DrawerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A398C401DE4AD4B0004798F /* DrawerComponent.swift */; };
 		8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */; };
 		8A42E0B21D8C3779004FAC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */; };
 		8A42E0B31D8C3779004FAC33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */; };
@@ -94,6 +95,7 @@
 		8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListActionFactory.swift; sourceTree = "<group>"; };
 		8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListAddAction.swift; sourceTree = "<group>"; };
 		8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListContentOperation.swift; sourceTree = "<group>"; };
+		8A398C401DE4AD4B0004798F /* DrawerComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerComponent.swift; sourceTree = "<group>"; };
 		8A42E0921D8C36A3004FAC33 /* HubFrameworkDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HubFrameworkDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */,
 				8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */,
 				8AD98C511DD5F25900F01A62 /* HeaderComponent.swift */,
+				8A398C401DE4AD4B0004798F /* DrawerComponent.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				8A374D011DBE659E0013E592 /* TodoListContentOperation.swift in Sources */,
 				8AD14FED1D9958A90008E182 /* UIImageView+Animation.swift in Sources */,
 				8A42E1F71D8C468C004FAC33 /* ComponentLayoutManager.swift in Sources */,
+				8A398C411DE4AD4B0004798F /* DrawerComponent.swift in Sources */,
 				8AD72F531D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

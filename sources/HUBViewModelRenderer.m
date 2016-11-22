@@ -22,26 +22,39 @@
 #import "HUBViewModelRenderer.h"
 #import "HUBViewModelDiff.h"
 #import "HUBCollectionViewLayout.h"
+#import "HUBResizeAnimation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelRenderer ()
 
 @property (nonatomic, strong, readonly) UICollectionView *collectionView;
+@property (nonatomic, strong, readonly) HUBCollectionViewLayout *layout;
 @property (nonatomic, strong, nullable) id<HUBViewModel> lastRenderedViewModel;
 
 @end
 
 @implementation HUBViewModelRenderer
 
+#pragma mark - Initializer
+
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
+                                layout:(HUBCollectionViewLayout *)layout
 {
+    NSParameterAssert(collectionView != nil);
+    NSParameterAssert(layout != nil);
+    
     self = [super init];
-    if (self) {
+    
+    if (self != nil) {
         _collectionView = collectionView;
+        _layout = layout;
     }
+    
     return self;
 }
+
+#pragma mark - API
 
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
       usingBatchUpdates:(BOOL)usingBatchUpdates
@@ -49,17 +62,16 @@ NS_ASSUME_NONNULL_BEGIN
              completion:(void (^)(void))completionBlock
 {
     HUBViewModelDiff *diff;
+    
     if (self.lastRenderedViewModel != nil) {
         id<HUBViewModel> nonnullViewModel = self.lastRenderedViewModel;
         diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
     }
-
-    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)self.collectionView.collectionViewLayout;
-
+    
     if (!usingBatchUpdates || diff == nil) {
         [self.collectionView reloadData];
         
-        [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:diff];
+        [self.layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:diff];
 
         /* Below is a workaround for an issue caused by UICollectionView not asking for numberOfItemsInSection
            before viewDidAppear is called or instantly after a call to reloadData. If reloadData is called
@@ -81,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [self.collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
                 [self.collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
                 
-                [layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:diff];
+                [self.layout computeForCollectionViewSize:self.collectionView.frame.size viewModel:viewModel diff:diff];
             } completion:^(BOOL finished) {
                 completionBlock();
             }];
@@ -95,6 +107,32 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     self.lastRenderedViewModel = viewModel;
+}
+
+#pragma mark - HUBAnimationPerformer
+
+- (void)performResizeAnimation:(HUBResizeAnimation *)animation
+{
+    HUBCollectionViewLayout * const newLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.layout.componentRegistry
+                                                                                    componentLayoutManager:self.layout.componentLayoutManager];
+    
+    NSDictionary<NSString *, NSValue *> * const componentViewSizes = animation.targetComponentViewSizes;
+    
+    for (NSString * const componentModelIdentifier in componentViewSizes) {
+        CGSize const viewSize = componentViewSizes[componentModelIdentifier].CGSizeValue;
+        [newLayout addViewSize:viewSize forComponentModelIdentifier:componentModelIdentifier];
+    }
+    
+    id<HUBViewModel> const currentViewModel = self.lastRenderedViewModel;
+    
+    [newLayout computeForCollectionViewSize:self.collectionView.frame.size viewModel:currentViewModel diff:nil];
+    
+    [UIView animateWithDuration:animation.duration delay:0 options:UIViewAnimationOptionLayoutSubviews animations:^{
+        self.collectionView.collectionViewLayout = newLayout;
+        animation.animationBlock();
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 @end

@@ -31,7 +31,7 @@ import HubFramework
  */
 class CarouselComponent: NSObject, HUBComponentWithChildren, HUBComponentWithRestorableUIState, HUBComponentViewObserver, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var view: UIView?
-    var childDelegate: HUBComponentChildDelegate?
+    weak var childDelegate: HUBComponentChildDelegate?
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: CarouselComponent.makeCollectionViewLayout())
     private var model: HUBComponentModel?
