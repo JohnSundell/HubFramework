@@ -34,7 +34,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8ABD6CA51DF6EC36005BCB33"
                BuildableName = "HubFrameworkTests.xctest"
-               BlueprintName = "HubFrameworkTests-iOS"
+               BlueprintName = "HubFrameworkTests-Dynamic"
                ReferencedContainer = "container:../HubFramework.xcodeproj">
             </BuildableReference>
          </TestableReference>

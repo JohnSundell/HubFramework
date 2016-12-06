@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8AE6BFFF1DF6E3110063B2B1"
                BuildableName = "HubFramework.framework"
-               BlueprintName = "HubFramework-iOS"
+               BlueprintName = "HubFramework-Dynamic"
                ReferencedContainer = "container:HubFramework.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8ABD6CA51DF6EC36005BCB33"
-               BuildableName = "HubFrameworkTests-iOS.xctest"
-               BlueprintName = "HubFrameworkTests-iOS"
+               BuildableName = "HubFrameworkTests.xctest"
+               BlueprintName = "HubFrameworkTests-Dynamic"
                ReferencedContainer = "container:HubFramework.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -45,7 +45,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8AE6BFFF1DF6E3110063B2B1"
             BuildableName = "HubFramework.framework"
-            BlueprintName = "HubFramework-iOS"
+            BlueprintName = "HubFramework-Dynamic"
             ReferencedContainer = "container:HubFramework.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -67,7 +67,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8AE6BFFF1DF6E3110063B2B1"
             BuildableName = "HubFramework.framework"
-            BlueprintName = "HubFramework-iOS"
+            BlueprintName = "HubFramework-Dynamic"
             ReferencedContainer = "container:HubFramework.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -85,7 +85,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8AE6BFFF1DF6E3110063B2B1"
             BuildableName = "HubFramework.framework"
-            BlueprintName = "HubFramework-iOS"
+            BlueprintName = "HubFramework-Dynamic"
             ReferencedContainer = "container:HubFramework.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

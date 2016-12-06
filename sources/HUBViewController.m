@@ -180,17 +180,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewWillAppear:animated];
     
-    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleKeyboardWillShowNotification:)
-                               name:UIKeyboardWillShowNotification
-                             object:nil];
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleKeyboardWillHideNotification:)
-                               name:UIKeyboardWillHideNotification
-                             object:nil];
+    [self startObservingKeyboardNotifications];
     
     if (self.viewModel == nil) {
         self.viewModel = self.viewModelLoader.initialViewModel;
@@ -216,11 +206,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    
+    [self stopObservingKeyboardNotifications];
     self.viewHasBeenLaidOut = NO;
 }
 
@@ -859,19 +845,67 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     return YES;
 }
 
-#pragma mark - Notification handling
+#pragma mark - Notification handling (iOS only)
+
+- (void)startObservingKeyboardNotifications
+{
+#if !(TARGET_OS_TV)
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardWillShowNotification:)
+                               name:UIKeyboardWillShowNotification
+                             object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleKeyboardWillHideNotification:)
+                               name:UIKeyboardWillHideNotification
+                             object:nil];
+#endif
+}
+
+- (void)stopObservingKeyboardNotifications
+{
+#if !(TARGET_OS_TV)
+    NSNotificationCenter * const notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+#endif
+}
 
 - (void)handleKeyboardWillShowNotification:(NSNotification *)notification
 {
+#if !(TARGET_OS_TV)
     CGRect const keyboardEndFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     self.visibleKeyboardHeight = CGRectGetHeight(keyboardEndFrame);
     [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
+#endif
 }
 
 - (void)handleKeyboardWillHideNotification:(NSNotification *)notification
 {
+#if !(TARGET_OS_TV)
     self.visibleKeyboardHeight = 0;
     [self updateOverlayComponentCenterPointsWithKeyboardNotification:notification];
+#endif
+}
+
+- (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
+{
+#if !(TARGET_OS_TV)
+    NSTimeInterval const animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve const animationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    [UIView beginAnimations:@"com.spotify.hub.keyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    
+    for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
+        overlayComponentWrapper.view.center = [self overlayComponentCenterPoint];
+    }
+    
+    [UIView commitAnimations];
+#endif
 }
 
 #pragma mark - Private utilities
@@ -988,8 +1022,8 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         return 0;
     }
 
-    CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
-    CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    CGFloat const statusBarWidth = CGRectGetWidth(HUBStatusBarFrame());
+    CGFloat const statusBarHeight = CGRectGetHeight(HUBStatusBarFrame());
     CGFloat const navigationBarWidth = CGRectGetWidth(self.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     CGFloat const topBarHeight = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
@@ -1058,22 +1092,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     frame.origin.y = self.collectionView.contentInset.top;
     frame.size.height -= self.visibleKeyboardHeight + CGRectGetMinY(frame);
     return CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
-}
-
-- (void)updateOverlayComponentCenterPointsWithKeyboardNotification:(NSNotification *)notification
-{
-    NSTimeInterval const animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    UIViewAnimationCurve const animationCurve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    
-    [UIView beginAnimations:@"com.spotify.hub.keyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    [UIView setAnimationCurve:animationCurve];
-    
-    for (HUBComponentWrapper * const overlayComponentWrapper in self.overlayComponentWrappers) {
-        overlayComponentWrapper.view.center = [self overlayComponentCenterPoint];
-    }
-    
-    [UIView commitAnimations];
 }
 
 - (HUBComponentWrapper *)configureHeaderOrOverlayComponentWrapperWithModel:(id<HUBComponentModel>)componentModel

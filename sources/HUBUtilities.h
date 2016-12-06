@@ -122,16 +122,23 @@ static inline NSDictionary<NSString *, id> * _Nullable HUBMergeDictionaries(NSDi
  *  `HUBAutoEquatable` is not used here, since we don't control the implementation of the class.
  */
 static inline NSArray<NSString *> *HUBNavigationItemPropertyNames() {
-    return @[
+    NSArray<NSString *> * const crossPlatformPropertyNames = @[
         HUBKeyPath((UINavigationItem *)nil, title),
         HUBKeyPath((UINavigationItem *)nil, titleView),
+        HUBKeyPath((UINavigationItem *)nil, leftBarButtonItems),
+        HUBKeyPath((UINavigationItem *)nil, rightBarButtonItems)
+    ];
+    
+#if TARGET_OS_TV
+    return crossPlatformPropertyNames;
+#else
+    return [crossPlatformPropertyNames arrayByAddingObjectsFromArray:@[
         HUBKeyPath((UINavigationItem *)nil, prompt),
         HUBKeyPath((UINavigationItem *)nil, backBarButtonItem),
         HUBKeyPath((UINavigationItem *)nil, hidesBackButton),
-        HUBKeyPath((UINavigationItem *)nil, leftBarButtonItems),
-        HUBKeyPath((UINavigationItem *)nil, rightBarButtonItems),
         HUBKeyPath((UINavigationItem *)nil, leftItemsSupplementBackButton)
-    ];
+    ]];
+#endif
 }
 
 /**
@@ -165,16 +172,20 @@ static inline BOOL HUBNavigationItemEqualToNavigationItem(UINavigationItem *navi
  *  which properties that should be handled, `HUBNavigationItemPropertyNames()` is called.
  */
 static inline UINavigationItem *HUBCopyNavigationItemProperties(UINavigationItem *navigationItemA, UINavigationItem * _Nullable navigationItemB) {
+#if TARGET_OS_TV
+    NSSet<NSString *> * const boolPropertyNames = [NSSet new];
+#else
     NSSet<NSString *> * const boolPropertyNames = [NSSet setWithObjects:HUBKeyPath(navigationItemA, hidesBackButton),
                                                                         HUBKeyPath(navigationItemA, leftItemsSupplementBackButton),
                                                                         nil];
+#endif
     
     for (NSString * const propertyName in HUBNavigationItemPropertyNames()) {
         id const value = [navigationItemB valueForKey:propertyName];
         
         if (value == nil) {
             if ([boolPropertyNames containsObject:propertyName]) {
-                navigationItemA.hidesBackButton = NO;
+                [navigationItemA setValue:@NO forKey:propertyName];
                 continue;
             }
         }
@@ -218,6 +229,19 @@ static inline void HUBPerformOnMainQueue(dispatch_block_t block) {
     }
     
     dispatch_async(dispatch_get_main_queue(), block);
+}
+
+/**
+ *  Return the current status bar frame of the application (if any)
+ *
+ *  This function returns the status bar frame on iOS, and a zero rectangle on tvOS.
+ */
+static inline CGRect HUBStatusBarFrame() {
+#if TARGET_OS_TV
+    return CGRectZero;
+#else
+    return [UIApplication sharedApplication].statusBarFrame;
+#endif
 }
 
 NS_ASSUME_NONNULL_END

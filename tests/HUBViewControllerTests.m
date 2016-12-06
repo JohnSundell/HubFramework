@@ -59,6 +59,7 @@
 #import "HUBViewControllerScrollHandlerMock.h"
 #import "HUBComponentCollectionViewCell.h"
 #import "UIViewController+HUBSimulateLayoutCycle.h"
+#import "HUBComponentWithChildren.h"
 #import "HUBUtilities.h"
 #import "HUBTestUtilities.h"
 
@@ -1770,8 +1771,8 @@
 
 - (void)testProposedContentInsetIsDefaultIfHeaderMissing
 {
-    CGFloat const statusBarWidth = CGRectGetWidth([UIApplication sharedApplication].statusBarFrame);
-    CGFloat const statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    CGFloat const statusBarWidth = CGRectGetWidth(HUBStatusBarFrame());
+    CGFloat const statusBarHeight = CGRectGetHeight(HUBStatusBarFrame());
     CGFloat const navigationBarWidth = CGRectGetWidth(self.viewController.navigationController.navigationBar.frame);
     CGFloat const navigationBarHeight = CGRectGetHeight(self.viewController.navigationController.navigationBar.frame);
     CGFloat const expectedTopInset = MIN(statusBarWidth, statusBarHeight) + MIN(navigationBarWidth, navigationBarHeight);
@@ -2718,6 +2719,7 @@
 
 - (void)testAdaptingOverlayComponentCenterPointToKeyboard
 {
+#if !(TARGET_OS_TV)
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
         [viewModelBuilder builderForOverlayComponentModelWithIdentifier:@"overlay"].title = @"Overlay";
         return YES;
@@ -2749,6 +2751,7 @@
     
     HUBAssertEqualFloatValues(self.component.view.center.x, 160);
     HUBAssertEqualFloatValues(self.component.view.center.y, 200);
+#endif
 }
 
 - (void)testScrollingToComponentAfterViewModelFinishesRendering
