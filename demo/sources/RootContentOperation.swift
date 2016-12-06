@@ -33,10 +33,12 @@ class RootContentOperation: NSObject, HUBContentOperation {
                  previousError: Error?) {
         viewModelBuilder.navigationBarTitle = "Hub Framework Demo App"
         
+        #if os(iOS)
         let gitHubSearchRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "gitHubSearch")
         gitHubSearchRowBuilder.title = "GitHub Search"
         gitHubSearchRowBuilder.subtitle = "A feature that enables you to search GitHub"
         gitHubSearchRowBuilder.targetBuilder.uri = .gitHubSearchViewURI
+        #endif
         
         let prettyPicturesRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "prettyPictures")
         prettyPicturesRowBuilder.title = "Pretty pictures"

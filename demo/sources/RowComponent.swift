@@ -36,7 +36,13 @@ class RowComponent: NSObject, HUBComponentWithImageHandling, UIGestureRecognizer
     var view: UIView?
     
     private lazy var cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-    private var cellHeight: CGFloat { return 50 }
+    private var cellHeight: CGFloat {
+        #if os(iOS)
+        return 50
+        #else
+        return 120
+        #endif
+    }
     private var imageSize: CGSize {
         return CGSize(width: cellHeight, height: cellHeight)
     }

@@ -254,6 +254,18 @@ NS_ASSUME_NONNULL_BEGIN
     self.viewModel = nil;
 }
 
+#pragma mark - UIFocusEnvironment
+
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments
+{
+    if (self.collectionView == nil) {
+        return @[];
+    }
+    
+    UICollectionView * const collectionView = self.collectionView;
+    return @[collectionView];
+}
+
 #pragma mark - HUBViewController
 
 - (BOOL)isViewScrolling
@@ -762,6 +774,48 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
     return [delegate viewControllerShouldStartScrolling:self];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+#if TARGET_OS_TV
+    NSUInteger const index = (NSUInteger)indexPath.item;
+    id<HUBComponentModel> const model = self.viewModel.bodyComponentModels[index];
+    [self selectComponentWithModel:model customData:nil];
+#endif
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canFocusItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldUpdateFocusInContext:(UICollectionViewFocusUpdateContext *)context
+{
+    return YES;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView
+        didUpdateFocusInContext:(UICollectionViewFocusUpdateContext *)context
+        withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator
+{
+    if (context.previouslyFocusedIndexPath != nil) {
+        NSIndexPath * const indexPath = context.previouslyFocusedIndexPath;
+        [self updateComponentAtIndexPath:indexPath forSelectionState:HUBComponentSelectionStateNone];
+    }
+    
+    if (context.nextFocusedIndexPath != nil) {
+        NSIndexPath * const indexPath = context.nextFocusedIndexPath;
+        [self updateComponentAtIndexPath:indexPath forSelectionState:HUBComponentSelectionStateHighlighted];
+    }
+}
+
+- (void)updateComponentAtIndexPath:(NSIndexPath *)indexPath forSelectionState:(HUBComponentSelectionState)selectionState
+{
+    NSUInteger const index = (NSUInteger)indexPath.item;
+    id<HUBComponentModel> const model = self.viewModel.bodyComponentModels[index];
+    HUBComponentWrapper * const wrapper = self.componentWrappersByModelIdentifier[model.identifier];
+    [wrapper updateViewForSelectionState:selectionState];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -965,6 +1019,7 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
 
         [self headerAndOverlayComponentViewsWillAppear];
         [self adjustCollectionViewContentInsetWithProposedTopValue:[self calculateTopContentInset]];
+        [self setNeedsFocusUpdate];
         [delegate viewControllerDidFinishRendering:self];
     }];
     

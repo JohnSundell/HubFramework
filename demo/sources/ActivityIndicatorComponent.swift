@@ -26,7 +26,7 @@ import HubFramework
 class ActivityIndicatorComponent: NSObject, HUBComponentViewObserver {
     var view: UIView?
     
-    private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    private lazy var activityIndicator = UIActivityIndicatorView.makeWithDefaultStyle()
     
     // MARK: - HUBComponent
 
@@ -58,5 +58,15 @@ class ActivityIndicatorComponent: NSObject, HUBComponentViewObserver {
     
     func viewWillAppear() {
         activityIndicator.startAnimating()
+    }
+}
+
+private extension UIActivityIndicatorView {
+    static func makeWithDefaultStyle() -> UIActivityIndicatorView {
+        #if os(tvOS)
+        return UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        #else
+        return UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        #endif
     }
 }

@@ -26,16 +26,23 @@ import HubFramework
 class DefaultComponentFactory: NSObject, HUBComponentFactory {
     static var namespace = "default"
     
-    private lazy var creationMap: [String: () -> HUBComponent] = [
-        DefaultComponentNames.row: { RowComponent() },
-        DefaultComponentNames.label: { LabelComponent() },
-        DefaultComponentNames.image: { ImageComponent() },
-        DefaultComponentNames.searchBar: { SearchBarComponent() },
-        DefaultComponentNames.activityIndicator: { ActivityIndicatorComponent() },
-        DefaultComponentNames.carousel: { CarouselComponent() },
-        DefaultComponentNames.header: { HeaderComponent() },
-        DefaultComponentNames.colorContainer: { ColorContainerComponent() }
-    ]
+    private lazy var creationMap: [String: () -> HUBComponent] = {
+        var map: [String: () -> HUBComponent] = [
+            DefaultComponentNames.row: { RowComponent() },
+            DefaultComponentNames.label: { LabelComponent() },
+            DefaultComponentNames.image: { ImageComponent() },
+            DefaultComponentNames.activityIndicator: { ActivityIndicatorComponent() },
+            DefaultComponentNames.carousel: { CarouselComponent() },
+            DefaultComponentNames.header: { HeaderComponent() },
+            DefaultComponentNames.colorContainer: { ColorContainerComponent() }
+        ]
+        
+        #if os(iOS)
+        map[DefaultComponentNames.searchBar] = { SearchBarComponent() }
+        #endif
+        
+        return map
+    }()
     
     func createComponent(forName name: String) -> HUBComponent? {
         return creationMap[name]?()

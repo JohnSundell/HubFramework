@@ -104,6 +104,7 @@ import HubFramework
     }
     
     private func registerGitHubSearchFeature() {
+        #if os(iOS)
         hubManager.featureRegistry.registerFeature(
             withIdentifier: "gitHubSearch",
             viewURIPredicate: HUBViewURIPredicate(viewURI: .gitHubSearchViewURI),
@@ -116,6 +117,7 @@ import HubFramework
         )
         
         hubManager.jsonSchemaRegistry.registerGitHubSearchSchema()
+        #endif
     }
     
     private func registerPrettyPicturesFeature() {

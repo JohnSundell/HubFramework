@@ -21,11 +21,17 @@
 
 import Foundation
 import HubFramework
+
+#if !os(tvOS)
 import SafariServices
+#endif
 
 /// Action handler that opens a URL in a Safari VC
 class PrettyPicturesActionHandler: NSObject, HUBActionHandler {
     func handleAction(with context: HUBActionContext) -> Bool {
+        #if os(tvOS)
+        return false
+        #else
         guard let uri = context.componentModel?.target?.uri else {
             return false
         }
@@ -34,6 +40,7 @@ class PrettyPicturesActionHandler: NSObject, HUBActionHandler {
         context.viewController.present(svc, animated: true, completion: nil)
 
         return true
+        #endif
     }
 }
 

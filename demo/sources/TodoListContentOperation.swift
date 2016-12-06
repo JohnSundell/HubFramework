@@ -37,7 +37,8 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
         viewModelBuilder.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddButton))
         
-        // Add a search bar if we have at least one item
+        // Add a search bar if we have at least one item (on iOS)
+        #if os(iOS)
         if !items.isEmpty {
             let searchBarBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "searchBar")
             searchBarBuilder.componentName = DefaultComponentNames.searchBar
@@ -58,6 +59,7 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
             let itemRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "item-\(index)")
             itemRowBuilder.title = item
         }
+        #endif
         
         delegate?.contentOperationDidFinish(self)
     }
@@ -87,6 +89,7 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
     }
     
     private func handleFilterAction(withContext context: HUBActionContext) -> Bool {
+        #if os(iOS)
         guard context.customActionIdentifier == filterActionIdentifier else {
             return false
         }
@@ -98,6 +101,9 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
         }
         
         return true
+        #else
+        return false
+        #endif
     }
     
     @objc private func handleAddButton() {

@@ -74,6 +74,18 @@ NS_ASSUME_NONNULL_BEGIN
     self.component.view.frame = self.contentView.bounds;
 }
 
+#pragma mark - UIFocusEnvironment
+
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments
+{
+    if (self.component == nil) {
+        return @[];
+    }
+    
+    id<HUBComponent> const component = self.component;
+    return @[HUBComponentLoadViewIfNeeded(component)];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

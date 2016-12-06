@@ -16,6 +16,36 @@
 		8A374CFF1DBE659E0013E592 /* TodoListActionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */; };
 		8A374D001DBE659E0013E592 /* TodoListAddAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */; };
 		8A374D011DBE659E0013E592 /* TodoListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */; };
+		8A3994241DF704F70025608E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */; };
+		8A3994251DF704F70025608E /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C581DD6062100F01A62 /* NavigationController.swift */; };
+		8A3994261DF704F70025608E /* ComponentMargin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA127EF1DE8A3150076582D /* ComponentMargin.swift */; };
+		8A3994271DF704F70025608E /* DefaultComponentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDB81D9A7DEC004B2CEA /* DefaultComponentFactory.swift */; };
+		8A3994281DF704F70025608E /* DefaultComponentNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDBA1D9A7E5D004B2CEA /* DefaultComponentNames.swift */; };
+		8A3994291DF704F70025608E /* RowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */; };
+		8A39942A1DF704F70025608E /* LabelComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDCD1D9AA294004B2CEA /* LabelComponent.swift */; };
+		8A39942B1DF704F70025608E /* ImageComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F561D9AC22600E4B427 /* ImageComponent.swift */; };
+		8A39942D1DF704F70025608E /* ActivityIndicatorComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDC71D9A9C3C004B2CEA /* ActivityIndicatorComponent.swift */; };
+		8A39942E1DF704F70025608E /* CarouselComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB850951DBF9DE300AFAFD0 /* CarouselComponent.swift */; };
+		8A39942F1DF704F70025608E /* HeaderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C511DD5F25900F01A62 /* HeaderComponent.swift */; };
+		8A3994301DF704F70025608E /* ColorContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6BD2D1DF1BF780063B2B1 /* ColorContainerComponent.swift */; };
+		8A3994311DF705050025608E /* RootContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729991D9546BB00EF43FC /* RootContentOperationFactory.swift */; };
+		8A3994321DF705050025608E /* RootContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A27299D1D9546ED00EF43FC /* RootContentOperation.swift */; };
+		8A3994331DF705050025608E /* GitHubSearchCustomDataKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDC31D9A92EC004B2CEA /* GitHubSearchCustomDataKeys.swift */; };
+		8A3994381DF705050025608E /* PrettyPicturesActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510FD781DD1D182002FA2DC /* PrettyPicturesActionHandler.swift */; };
+		8A3994391DF705050025608E /* PrettyPicturesContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F541D9AC18100E4B427 /* PrettyPicturesContentOperationFactory.swift */; };
+		8A39943A1DF705050025608E /* PrettyPicturesContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD72F521D9ABDB100E4B427 /* PrettyPicturesContentOperation.swift */; };
+		8A39943B1DF705050025608E /* ReallyLongListContentOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEAB1D9D1AE4005113B5 /* ReallyLongListContentOperationFactory.swift */; };
+		8A39943C1DF705050025608E /* ReallyLongListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABCCEA91D9D1AC3005113B5 /* ReallyLongListContentOperation.swift */; };
+		8A39943D1DF705050025608E /* TodoListActionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */; };
+		8A39943E1DF705050025608E /* TodoListAddAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */; };
+		8A3994401DF705050025608E /* StickyHeaderContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C551DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift */; };
+		8A3994411DF705050025608E /* URL+ViewURIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2729A11D95486A00EF43FC /* URL+ViewURIs.swift */; };
+		8A3994421DF705050025608E /* UIImageView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD14FEC1D9958A90008E182 /* UIImageView+Animation.swift */; };
+		8A3994431DF705050025608E /* HUBJSONSchemaRegistry+CustomSchemas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5EDC51D9A9674004B2CEA /* HUBJSONSchemaRegistry+CustomSchemas.swift */; };
+		8A3994441DF705230025608E /* HubFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */; };
+		8A3994451DF705230025608E /* HubFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A39944A1DF7052E0025608E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A3994491DF7052E0025608E /* SystemConfiguration.framework */; };
+		8A39944B1DF70A770025608E /* TodoListContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */; };
 		8A42E0AB1D8C376B004FAC33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */; };
 		8A42E0B21D8C3779004FAC33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */; };
 		8A42E0B31D8C3779004FAC33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */; };
@@ -48,8 +78,8 @@
 		8AD98C561DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C551DD5F5FE00F01A62 /* StickyHeaderContentOperation.swift */; };
 		8AD98C591DD6062100F01A62 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD98C581DD6062100F01A62 /* NavigationController.swift */; };
 		8AE6BD2E1DF1BF780063B2B1 /* ColorContainerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6BD2D1DF1BF780063B2B1 /* ColorContainerComponent.swift */; };
-		8AE6C0101DF6E3560063B2B1 /* HubFramework-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */; };
-		8AE6C0111DF6E3560063B2B1 /* HubFramework-iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AE6C0101DF6E3560063B2B1 /* HubFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */; };
+		8AE6C0111DF6E3560063B2B1 /* HubFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +89,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8A42E0911D8C36A3004FAC33;
 			remoteInfo = HubFrameworkDemo;
+		};
+		8A39941F1DF704470025608E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8ABD6CA61DF6EC36005BCB33;
+			remoteInfo = "HubFrameworkTests-Dynamic";
+		};
+		8A3994461DF705230025608E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AE6BFFF1DF6E3110063B2B1;
+			remoteInfo = "HubFramework-Dynamic";
 		};
 		8A42E0BA1D8C37B4004FAC33 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -91,13 +135,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		8A3994481DF705230025608E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8A3994451DF705230025608E /* HubFramework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8AE6C0141DF6E3560063B2B1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8AE6C0111DF6E3560063B2B1 /* HubFramework-iOS.framework in Embed Frameworks */,
+				8AE6C0111DF6E3560063B2B1 /* HubFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,11 +171,14 @@
 		8A374CFC1DBE659E0013E592 /* TodoListActionFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListActionFactory.swift; sourceTree = "<group>"; };
 		8A374CFD1DBE659E0013E592 /* TodoListAddAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListAddAction.swift; sourceTree = "<group>"; };
 		8A374CFE1DBE659E0013E592 /* TodoListContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoListContentOperation.swift; sourceTree = "<group>"; };
+		8A39940E1DF704470025608E /* HubFrameworkDemo-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HubFrameworkDemo-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A3994221DF704CB0025608E /* iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = iOS.plist; sourceTree = "<group>"; };
+		8A3994231DF704CB0025608E /* tvOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = tvOS.plist; sourceTree = "<group>"; };
+		8A3994491DF7052E0025608E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		8A42E0921D8C36A3004FAC33 /* HubFrameworkDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HubFrameworkDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A42E0A91D8C376B004FAC33 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A42E0B01D8C3779004FAC33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8A42E0B11D8C3779004FAC33 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A42E0B51D8C37B4004FAC33 /* HubFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HubFramework.xcodeproj; path = ../HubFramework.xcodeproj; sourceTree = "<group>"; };
 		8A42E1FA1D8C4CEB004FAC33 /* RowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowComponent.swift; sourceTree = "<group>"; };
 		8A9204FC1DDE07810081E0B5 /* HeaderComponentUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HeaderComponentUITests.swift; path = tests/HeaderComponentUITests.swift; sourceTree = SOURCE_ROOT; };
@@ -161,11 +219,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8A39940B1DF704470025608E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A3994441DF705230025608E /* HubFramework.framework in Frameworks */,
+				8A39944A1DF7052E0025608E /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A42E08F1D8C36A3004FAC33 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AE6C0101DF6E3560063B2B1 /* HubFramework-iOS.framework in Frameworks */,
+				8AE6C0101DF6E3560063B2B1 /* HubFramework.framework in Frameworks */,
 				8AD732081D9AD63700E4B427 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,6 +282,7 @@
 			children = (
 				8A42E0921D8C36A3004FAC33 /* HubFrameworkDemo.app */,
 				657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */,
+				8A39940E1DF704470025608E /* HubFrameworkDemo-tvOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -237,7 +305,8 @@
 			children = (
 				8A42E0AE1D8C3779004FAC33 /* Assets.xcassets */,
 				8A42E0AF1D8C3779004FAC33 /* LaunchScreen.storyboard */,
-				8A42E0B11D8C3779004FAC33 /* Info.plist */,
+				8A3994221DF704CB0025608E /* iOS.plist */,
+				8A3994231DF704CB0025608E /* tvOS.plist */,
 			);
 			name = Resources;
 			path = resources;
@@ -248,7 +317,8 @@
 			children = (
 				8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */,
 				8A42E0BD1D8C37B4004FAC33 /* HubFrameworkTests.xctest */,
-				8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */,
+				8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */,
+				8A3994201DF704470025608E /* HubFrameworkTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -337,6 +407,7 @@
 		8AD732061D9AD63700E4B427 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8A3994491DF7052E0025608E /* SystemConfiguration.framework */,
 				8AD732071D9AD63700E4B427 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
@@ -371,6 +442,25 @@
 			productReference = 657DFE0F1DC8E1B600F20C0E /* HubFrameworkDemoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		8A39940D1DF704470025608E /* HubFrameworkDemo-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A3994211DF704470025608E /* Build configuration list for PBXNativeTarget "HubFrameworkDemo-tvOS" */;
+			buildPhases = (
+				8A39940A1DF704470025608E /* Sources */,
+				8A39940B1DF704470025608E /* Frameworks */,
+				8A39940C1DF704470025608E /* Resources */,
+				8A3994481DF705230025608E /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8A3994471DF705230025608E /* PBXTargetDependency */,
+			);
+			name = "HubFrameworkDemo-tvOS";
+			productName = "HubFrameworkDemo-tvOS";
+			productReference = 8A39940E1DF704470025608E /* HubFrameworkDemo-tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 		8A42E0911D8C36A3004FAC33 /* HubFrameworkDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A42E0A41D8C36A3004FAC33 /* Build configuration list for PBXNativeTarget "HubFrameworkDemo" */;
@@ -396,7 +486,7 @@
 		8A42E08A1D8C36A3004FAC33 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0800;
+				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Spotify;
 				TargetAttributes = {
@@ -405,6 +495,10 @@
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 8A42E0911D8C36A3004FAC33;
+					};
+					8A39940D1DF704470025608E = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
 					};
 					8A42E0911D8C36A3004FAC33 = {
 						CreatedOnToolsVersion = 8.0;
@@ -432,12 +526,20 @@
 			projectRoot = "";
 			targets = (
 				8A42E0911D8C36A3004FAC33 /* HubFrameworkDemo */,
+				8A39940D1DF704470025608E /* HubFrameworkDemo-tvOS */,
 				657DFE0E1DC8E1B600F20C0E /* HubFrameworkDemoUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		8A3994201DF704470025608E /* HubFrameworkTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = HubFrameworkTests.xctest;
+			remoteRef = 8A39941F1DF704470025608E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8A42E0BB1D8C37B4004FAC33 /* libHubFramework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -452,10 +554,10 @@
 			remoteRef = 8A42E0BC1D8C37B4004FAC33 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8AE6C00F1DF6E3560063B2B1 /* HubFramework-iOS.framework */ = {
+		8AE6C00F1DF6E3560063B2B1 /* HubFramework.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = "HubFramework-iOS.framework";
+			path = HubFramework.framework;
 			remoteRef = 8AE6C00E1DF6E3560063B2B1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -463,6 +565,13 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		657DFE0D1DC8E1B600F20C0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A39940C1DF704470025608E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -491,6 +600,40 @@
 				8A9204FF1DDE07AF0081E0B5 /* UITestCase.swift in Sources */,
 				8AA124D11DE758300076582D /* ReloadUITests.swift in Sources */,
 				8AA98C451DD3778B006CA6AA /* PaginationUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A39940A1DF704470025608E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A39942F1DF704F70025608E /* HeaderComponent.swift in Sources */,
+				8A3994271DF704F70025608E /* DefaultComponentFactory.swift in Sources */,
+				8A3994411DF705050025608E /* URL+ViewURIs.swift in Sources */,
+				8A39942A1DF704F70025608E /* LabelComponent.swift in Sources */,
+				8A3994281DF704F70025608E /* DefaultComponentNames.swift in Sources */,
+				8A39944B1DF70A770025608E /* TodoListContentOperation.swift in Sources */,
+				8A3994381DF705050025608E /* PrettyPicturesActionHandler.swift in Sources */,
+				8A39943B1DF705050025608E /* ReallyLongListContentOperationFactory.swift in Sources */,
+				8A3994401DF705050025608E /* StickyHeaderContentOperation.swift in Sources */,
+				8A3994301DF704F70025608E /* ColorContainerComponent.swift in Sources */,
+				8A3994321DF705050025608E /* RootContentOperation.swift in Sources */,
+				8A39943A1DF705050025608E /* PrettyPicturesContentOperation.swift in Sources */,
+				8A3994291DF704F70025608E /* RowComponent.swift in Sources */,
+				8A39943D1DF705050025608E /* TodoListActionFactory.swift in Sources */,
+				8A3994431DF705050025608E /* HUBJSONSchemaRegistry+CustomSchemas.swift in Sources */,
+				8A39942E1DF704F70025608E /* CarouselComponent.swift in Sources */,
+				8A39943C1DF705050025608E /* ReallyLongListContentOperation.swift in Sources */,
+				8A3994261DF704F70025608E /* ComponentMargin.swift in Sources */,
+				8A3994421DF705050025608E /* UIImageView+Animation.swift in Sources */,
+				8A3994331DF705050025608E /* GitHubSearchCustomDataKeys.swift in Sources */,
+				8A39942B1DF704F70025608E /* ImageComponent.swift in Sources */,
+				8A39943E1DF705050025608E /* TodoListAddAction.swift in Sources */,
+				8A3994391DF705050025608E /* PrettyPicturesContentOperationFactory.swift in Sources */,
+				8A3994311DF705050025608E /* RootContentOperationFactory.swift in Sources */,
+				8A3994241DF704F70025608E /* AppDelegate.swift in Sources */,
+				8A39942D1DF704F70025608E /* ActivityIndicatorComponent.swift in Sources */,
+				8A3994251DF704F70025608E /* NavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +684,11 @@
 			target = 8A42E0911D8C36A3004FAC33 /* HubFrameworkDemo */;
 			targetProxy = 657DFE141DC8E1B600F20C0E /* PBXContainerItemProxy */;
 		};
+		8A3994471DF705230025608E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "HubFramework-Dynamic";
+			targetProxy = 8A3994461DF705230025608E /* PBXContainerItemProxy */;
+		};
 		8AE6C0131DF6E3560063B2B1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "HubFramework-iOS";
@@ -584,6 +732,36 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = HubFrameworkDemo;
+			};
+			name = Release;
+		};
+		8A39941A1DF704470025608E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "$(SRCROOT)/resources/tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.spotify.HubFrameworkDemo-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_INCLUDE_PATHS = ../;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		8A39941B1DF704470025608E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "$(SRCROOT)/resources/tvOS.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.spotify.HubFrameworkDemo-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_INCLUDE_PATHS = ../;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -686,7 +864,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "$(SRCROOT)/resources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/resources/iOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemo;
@@ -701,7 +879,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "$(SRCROOT)/resources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/resources/iOS.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotify.HubFrameworkDemo;
@@ -720,6 +898,15 @@
 			buildConfigurations = (
 				657DFE171DC8E1B600F20C0E /* Debug */,
 				657DFE181DC8E1B600F20C0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A3994211DF704470025608E /* Build configuration list for PBXNativeTarget "HubFrameworkDemo-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A39941A1DF704470025608E /* Debug */,
+				8A39941B1DF704470025608E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
