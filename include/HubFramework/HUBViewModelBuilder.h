@@ -115,6 +115,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) NSDictionary<NSString *, id> *customData;
 
+#pragma mark - Setting a transition duration from a previous view model
+
+@property (nonatomic, assign) NSTimeInterval transitionDuration;
+
 #pragma mark - Checking if component model builders exist
 
 /**
@@ -239,7 +243,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param value The value to put into customData. If the value is nil existing value for the key will be deleted from the dictionary.
  *  @param key The key used in customData to store the value
  */
-- (void)setCustomDataValue:(nullable id)value forKey:(nonnull NSString *)key NS_SWIFT_NAME(setCustomDataValue(_:forKey:) );
+- (void)setCustomDataValue:(nullable id)value forKey:(nonnull NSString *)key NS_SWIFT_NAME(setCustomDataValue(_:forKey:));
+
 @end
 
 NS_ASSUME_NONNULL_END

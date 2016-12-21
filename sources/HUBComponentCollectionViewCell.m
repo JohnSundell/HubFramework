@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if (self) {
         _identifier = [NSUUID UUID];
+        self.clipsToBounds = YES;
     }
     
     return self;
@@ -72,7 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super layoutSubviews];
     
-    self.component.view.frame = self.contentView.bounds;
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionLayoutSubviews animations:^{
+        self.component.view.frame = self.contentView.bounds;
+    } completion:nil];
 }
 
 @end

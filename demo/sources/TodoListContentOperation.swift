@@ -29,13 +29,25 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
     private var addActionIdentifier: HUBIdentifier {
         return HUBIdentifier(namespace: TodoListActionFactory.namespace, name: TodoListActionNames.addCompleted)
     }
-    private var filterActionIdentifier: HUBIdentifier { return HUBIdentifier(namespace: "todo", name: "filter") }
+    private var filterActionIdentifier: HUBIdentifier {
+        return HUBIdentifier(namespace: TodoListActionFactory.namespace, name: "filter")
+    }
+    private var markActionIdentifier: HUBIdentifier {
+        return HUBIdentifier(namespace: TodoListActionFactory.namespace, name: "mark")
+    }
     private var filter: String?
-    
-    private var items = [String]()
+    private var transitionDuration = TimeInterval(0)
+    private lazy var items = [String]()
+    private lazy var markedItemIndexes = Set<UInt>()
 
     func perform(forViewURI viewURI: URL, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState, viewModelBuilder: HUBViewModelBuilder, previousError: Error?) {
-        viewModelBuilder.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddButton))
+        if markedItemIndexes.isEmpty {
+            viewModelBuilder.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddButton))
+        } else {
+            let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButton))
+            let deleteButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleDeleteButton))
+            viewModelBuilder.navigationItem.rightBarButtonItems = [doneButton, deleteButton]
+        }
         
         // Add a search bar if we have at least one item
         if !items.isEmpty {
@@ -57,7 +69,15 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
             
             let itemRowBuilder = viewModelBuilder.builderForBodyComponentModel(withIdentifier: "item-\(index)")
             itemRowBuilder.title = item
+            itemRowBuilder.targetBuilder.actionIdentifiers.add(markActionIdentifier)
+            
+            var customData = itemRowBuilder.customData ?? [:]
+            customData[RowComponent.CustomDataKeys.marked] = markedItemIndexes.contains(UInt(index))
+            itemRowBuilder.customData = customData
         }
+        
+        viewModelBuilder.transitionDuration = transitionDuration
+        transitionDuration = 0
         
         delegate?.contentOperationDidFinish(self)
     }
@@ -65,7 +85,9 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
     func actionPerformed(with context: HUBActionContext, featureInfo: HUBFeatureInfo, connectivityState: HUBConnectivityState) {
         if !handleAddAction(withContext: context) {
             if !handleFilterAction(withContext: context) {
-                return
+                if !handleMarkAction(withContext: context) {
+                    return
+                }
             }
         }
         
@@ -100,8 +122,41 @@ class TodoListContentOperation: NSObject, HUBContentOperationActionPerformer, HU
         return true
     }
     
+    private func handleMarkAction(withContext context: HUBActionContext) -> Bool {
+        guard context.customActionIdentifier == markActionIdentifier else {
+            return false
+        }
+        
+        guard let index = context.componentModel?.index else {
+            return false
+        }
+        
+        let relativeIndex = index - 1
+        
+        if markedItemIndexes.remove(relativeIndex) == nil {
+            markedItemIndexes.insert(relativeIndex)
+        }
+        
+        return true
+    }
+    
     @objc private func handleAddButton() {
         let actionIdentifier = HUBIdentifier(namespace: TodoListActionFactory.namespace, name: TodoListActionNames.add)
         actionPerformer?.performAction(withIdentifier: actionIdentifier, customData: nil)
+    }
+    
+    @objc private func handleDoneButton() {
+        markedItemIndexes = []
+        delegate?.contentOperationRequiresRescheduling(self)
+    }
+    
+    @objc private func handleDeleteButton() {
+        items = items.enumerated().flatMap { (index, item) in
+            return markedItemIndexes.contains(UInt(index)) ? nil : item
+        }
+        
+        markedItemIndexes = []
+        transitionDuration = 1
+        delegate?.contentOperationRequiresRescheduling(self)
     }
 }

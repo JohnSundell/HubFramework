@@ -923,7 +923,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         [self.viewModelRenderer renderViewModel:viewModel
                                inCollectionView:collectionView
                               usingBatchUpdates:self.viewHasAppeared
-                                       animated:NO
                                 addHeaderMargin:shouldAddHeaderMargin
                                      completion:^{
                                          [self headerAndOverlayComponentViewsWillAppear];

@@ -210,10 +210,20 @@ NS_ASSUME_NONNULL_BEGIN
     CGFloat maxContentOffset = MAX(self.contentSize.height + self.collectionView.contentInset.bottom - CGRectGetHeight(self.collectionView.frame), minContentOffset);
     offset.y = MIN(maxContentOffset, offset.y);
     
-    self.previousLayoutAttributesByIndexPath = nil;
+    //self.previousLayoutAttributesByIndexPath = nil;
     self.lastViewModelDiff = nil;
     
     return offset;
+}
+
+- (nullable UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    return self.previousLayoutAttributesByIndexPath[itemIndexPath];
+}
+
+- (nullable UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    return self.layoutAttributesByIndexPath[itemIndexPath];
 }
 
 #pragma mark - HUBComponentChildDelegate

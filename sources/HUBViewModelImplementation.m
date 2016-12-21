@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize overlayComponentModels = _overlayComponentModels;
 @synthesize customData = _customData;
 @synthesize buildDate = _buildDate;
+@synthesize transitionDuration = _transitionDuration;
 
 #pragma mark - HUBAutoEquatable
 
@@ -54,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
                bodyComponentModels:(NSArray<id<HUBComponentModel>> *)bodyComponentModels
             overlayComponentModels:(NSArray<id<HUBComponentModel>> *)overlayComponentModels
                         customData:(nullable NSDictionary<NSString *, id> *)customData
+                transitionDuration:(NSTimeInterval)transitionDuration
 {
     self = [super init];
     
@@ -64,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
         _overlayComponentModels = overlayComponentModels;
         _customData = customData;
         _buildDate = [NSDate date];
+        _transitionDuration = transitionDuration;
         
         if (navigationItem != nil) {
             _navigationItem = HUBCopyNavigationItemProperties([UINavigationItem new], navigationItem);

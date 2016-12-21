@@ -36,7 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
        inCollectionView:(UICollectionView *)collectionView
       usingBatchUpdates:(BOOL)usingBatchUpdates
-               animated:(BOOL)animated
         addHeaderMargin:(BOOL)addHeaderMargin
              completion:(void (^)(void))completionBlock
 {
@@ -88,8 +87,8 @@ NS_ASSUME_NONNULL_BEGIN
             }];
         };
         
-        if (animated) {
-            updateBlock();
+        if (viewModel.transitionDuration > 0) {
+            [UIView animateWithDuration:viewModel.transitionDuration animations:updateBlock];
         } else {
             [UIView performWithoutAnimation:updateBlock];
         }

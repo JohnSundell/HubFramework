@@ -96,6 +96,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) NSDate *buildDate;
 
+@property (nonatomic, assign, readonly) NSTimeInterval transitionDuration;
+
 @end
 
 NS_ASSUME_NONNULL_END

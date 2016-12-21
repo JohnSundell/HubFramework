@@ -28,6 +28,7 @@ struct TodoListActionNames {
     static var add: String { return "add" }
     /// The name of an action that gets performed once a todo item has been added
     static var addCompleted: String { return "add-completed" }
+    static var mark: String { return "mark" }
 }
 
 /// Action factory used by the "Todo list" feature

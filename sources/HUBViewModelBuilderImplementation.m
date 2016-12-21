@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize viewIdentifier = _viewIdentifier;
 @synthesize customData = _customData;
+@synthesize transitionDuration = _transitionDuration;
 
 #pragma mark - Initializer
 
@@ -263,7 +264,8 @@ NS_ASSUME_NONNULL_BEGIN
                                              headerComponentModel:headerComponentModel
                                               bodyComponentModels:bodyComponentModels
                                            overlayComponentModels:overlayComponentModels
-                                                       customData:[self.customData copy]];
+                                                       customData:[self.customData copy]
+                                               transitionDuration:self.transitionDuration];
 }
 
 #pragma mark - Manipulate custom data

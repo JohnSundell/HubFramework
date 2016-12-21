@@ -32,6 +32,10 @@ import HubFramework
  *  - mainImageData
  */
 class RowComponent: NSObject, HUBComponentWithImageHandling, UIGestureRecognizerDelegate {
+    struct CustomDataKeys {
+        static var marked: String { return "marked" }
+    }
+    
     var layoutTraits: Set<HUBComponentLayoutTrait> { return [.fullWidth, .stackable] }
     var view: UIView?
     
@@ -46,6 +50,10 @@ class RowComponent: NSObject, HUBComponentWithImageHandling, UIGestureRecognizer
     }
     
     func preferredViewSize(forDisplaying model: HUBComponentModel, containerViewSize: CGSize) -> CGSize {
+        if model.customData?[CustomDataKeys.marked] as? Bool == true {
+            return CGSize(width: containerViewSize.width, height: cellHeight * 4)
+        }
+        
         return CGSize(width: containerViewSize.width, height: cellHeight)
     }
     
@@ -58,6 +66,12 @@ class RowComponent: NSObject, HUBComponentWithImageHandling, UIGestureRecognizer
             UIColor.lightGray.setFill()
             UIRectFill(CGRect(origin: CGPoint(), size: imageSize))
             cell.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
+        }
+        
+        if model.customData?[CustomDataKeys.marked] as? Bool == true {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
         }
     }
     
