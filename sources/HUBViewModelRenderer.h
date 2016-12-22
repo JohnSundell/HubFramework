@@ -20,8 +20,10 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "HUBViewModel.h"
 #import "HUBHeaderMacros.h"
+
+@protocol HUBViewModel;
+@class HUBCollectionViewLayoutFactory;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  A class used to render view models in a collection view.
  */
 @interface HUBViewModelRenderer : NSObject
+
+- (instancetype)initWithCollectionViewLayoutFactory:(HUBCollectionViewLayoutFactory *)collectionViewLayoutFactory HUB_DESIGNATED_INITIALIZER;
 
 /**
  *  Renders the provided view model in the collection view.

@@ -20,18 +20,37 @@
  */
 
 #import "HUBViewModelRenderer.h"
+
+#import "HUBCollectionViewLayoutFactory.h"
 #import "HUBViewModelDiff.h"
-#import "HUBCollectionViewLayout.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HUBViewModelRenderer ()
 
+@property (nonatomic, strong, readonly) HUBCollectionViewLayoutFactory *collectionViewLayoutFactory;
 @property (nonatomic, strong, nullable) id<HUBViewModel> lastRenderedViewModel;
 
 @end
 
 @implementation HUBViewModelRenderer
+
+#pragma mark - Initializer
+
+- (instancetype)initWithCollectionViewLayoutFactory:(HUBCollectionViewLayoutFactory *)collectionViewLayoutFactory
+{
+    NSParameterAssert(collectionViewLayoutFactory != nil);
+    
+    self = [super init];
+    
+    if (self) {
+        _collectionViewLayoutFactory = collectionViewLayoutFactory;
+    }
+    
+    return self;
+}
+
+#pragma mark - API
 
 - (void)renderViewModel:(id<HUBViewModel>)viewModel
        inCollectionView:(UICollectionView *)collectionView
@@ -41,20 +60,25 @@ NS_ASSUME_NONNULL_BEGIN
              completion:(void (^)(void))completionBlock
 {
     HUBViewModelDiff *diff;
+    
     if (self.lastRenderedViewModel != nil) {
-        id<HUBViewModel> nonnullViewModel = self.lastRenderedViewModel;
-        diff = [HUBViewModelDiff diffFromViewModel:nonnullViewModel toViewModel:viewModel];
+        id<HUBViewModel> const lastRenderedViewModel = self.lastRenderedViewModel;
+        diff = [HUBViewModelDiff diffFromViewModel:lastRenderedViewModel toViewModel:viewModel];
     }
-
-    HUBCollectionViewLayout * const layout = (HUBCollectionViewLayout *)collectionView.collectionViewLayout;
+    
+    UICollectionViewLayout * const newLayout = [self.collectionViewLayoutFactory createLayoutForCollectionViewWithSize:collectionView.frame.size
+                                                                                                             viewModel:viewModel
+                                                                                                                  diff:diff
+                                                                                                        previousLayout:collectionView.collectionViewLayout
+                                                                                                       addHeaderMargin:addHeaderMargin];
+    
+    NSLog(@"VM --> %@", viewModel.debugDescription);
+    NSLog(@"DIFF --> %@", diff.debugDescription);
+    NSLog(@"CV ---> %@", collectionView.indexPathsForVisibleItems);
 
     if (!usingBatchUpdates || diff == nil) {
         [collectionView reloadData];
-        
-        [layout computeForCollectionViewSize:collectionView.frame.size
-                                   viewModel:viewModel
-                                        diff:diff
-                             addHeaderMargin:addHeaderMargin];
+        collectionView.collectionViewLayout = newLayout;
 
         /* Below is a workaround for an issue caused by UICollectionView not asking for numberOfItemsInSection
            before viewDidAppear is called or instantly after a call to reloadData. If reloadData is called
@@ -76,13 +100,8 @@ NS_ASSUME_NONNULL_BEGIN
                 [collectionView insertItemsAtIndexPaths:diff.insertedBodyComponentIndexPaths];
                 [collectionView deleteItemsAtIndexPaths:diff.deletedBodyComponentIndexPaths];
                 [collectionView reloadItemsAtIndexPaths:diff.reloadedBodyComponentIndexPaths];
-                
-                [layout computeForCollectionViewSize:collectionView.frame.size
-                                           viewModel:viewModel
-                                                diff:diff
-                                     addHeaderMargin:addHeaderMargin];
-                
             } completion:^(BOOL finished) {
+                collectionView.collectionViewLayout = newLayout;
                 self.lastRenderedViewModel = viewModel;
                 completionBlock();
             }];

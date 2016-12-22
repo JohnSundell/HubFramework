@@ -25,12 +25,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation HUBViewModelRendererMock
 
-- (instancetype)init
+- (instancetype)initWithCollectionViewLayoutFactory:(HUBCollectionViewLayoutFactory *)collectionViewLayoutFactory
 {
-    self = [super init];
+    self = [super initWithCollectionViewLayoutFactory:collectionViewLayoutFactory];
+    
     if (self) {
         _completionBlocks = [NSMutableArray array];
     }
+    
     return self;
 }
 

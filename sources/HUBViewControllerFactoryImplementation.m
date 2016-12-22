@@ -30,6 +30,7 @@
 #import "HUBFeatureInfoImplementation.h"
 #import "HUBViewController+Initializer.h"
 #import "HUBCollectionViewFactory.h"
+#import "HUBCollectionViewLayoutFactory.h"
 #import "HUBInitialViewModelRegistry.h"
 #import "HUBViewControllerDefaultScrollHandler.h"
 #import "HUBActionHandlerWrapper.h"
@@ -147,7 +148,10 @@ NS_ASSUME_NONNULL_BEGIN
     HUBViewModelLoaderImplementation * const viewModelLoader = [self.viewModelLoaderFactory createViewModelLoaderForViewURI:viewURI
                                                                                                         featureRegistration:featureRegistration];
     
-    HUBViewModelRenderer * const viewModelRenderer = [HUBViewModelRenderer new];
+    HUBCollectionViewLayoutFactory * const collectionViewLayoutFactory = [[HUBCollectionViewLayoutFactory alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                                    componentLayoutManager:self.componentLayoutManager];
+    
+    HUBViewModelRenderer * const viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionViewLayoutFactory:collectionViewLayoutFactory];
     id<HUBImageLoader> const imageLoader = [self.imageLoaderFactory createImageLoader];
     HUBCollectionViewFactory * const collectionViewFactory = [HUBCollectionViewFactory new];
     HUBComponentReusePool * const componentReusePool = [[HUBComponentReusePool alloc] initWithComponentRegistry:self.componentRegistry];

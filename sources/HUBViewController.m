@@ -39,7 +39,6 @@
 #import "HUBComponentImageLoadingContext.h"
 #import "HUBCollectionViewFactory.h"
 #import "HUBCollectionView.h"
-#import "HUBCollectionViewLayout.h"
 #import "HUBContainerView.h"
 #import "HUBContentReloadPolicy.h"
 #import "HUBViewControllerScrollHandler.h"
@@ -902,11 +901,6 @@ willUpdateSelectionState:(HUBComponentSelectionState)selectionState
         if (!self.viewHasBeenLaidOut) {
             completionHandler();
             return;
-        }
-        
-        if (![self.collectionView.collectionViewLayout isKindOfClass:[HUBCollectionViewLayout class]]) {
-            self.collectionView.collectionViewLayout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                           componentLayoutManager:self.componentLayoutManager];
         }
         
         [self saveStatesForVisibleComponents];

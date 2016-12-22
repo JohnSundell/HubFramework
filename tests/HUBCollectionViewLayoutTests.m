@@ -23,7 +23,7 @@
 
 #import "HUBIdentifier.h"
 #import "HUBComponentRegistryImplementation.h"
-#import "HUBCollectionViewLayout.h"
+#import "HUBCollectionViewLayoutFactory.h"
 #import "HUBViewModelBuilderImplementation.h"
 #import "HUBViewModelImplementation.h"
 #import "HUBComponentLayoutManagerMock.h"
@@ -55,6 +55,7 @@
 @property (nonatomic, strong) HUBComponentRegistryImplementation *componentRegistry;
 @property (nonatomic, strong) HUBComponentLayoutManagerMock *componentLayoutManager;
 @property (nonatomic, strong) HUBViewModelBuilderImplementation *viewModelBuilder;
+@property (nonatomic, strong) HUBCollectionViewLayoutFactory *layoutFactory;
 
 @end
 
@@ -117,6 +118,9 @@
     self.viewModelBuilder = [[HUBViewModelBuilderImplementation alloc] initWithJSONSchema:JSONSchema
                                                                         componentDefaults:componentDefaults
                                                                         iconImageResolver:iconImageResolver];
+    
+    self.layoutFactory = [[HUBCollectionViewLayoutFactory alloc] initWithComponentRegistry:self.componentRegistry
+                                                                    componentLayoutManager:self.componentLayoutManager];
 }
 
 - (void)tearDown
@@ -145,7 +149,7 @@
     CGSize const componentSize = self.compactComponent.preferredViewSize;
     self.componentLayoutManager.contentEdgeMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(edgeMargin);
     
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:NO];
     
     NSIndexPath * const componentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     CGRect const componentViewFrame = [layout layoutAttributesForItemAtIndexPath:componentIndexPath].frame;
@@ -163,7 +167,7 @@
     CGFloat const edgeMargin = 20;
     self.componentLayoutManager.contentEdgeMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(edgeMargin);
     
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:NO];
     
     NSIndexPath * const componentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     CGRect const componentViewFrame = [layout layoutAttributesForItemAtIndexPath:componentIndexPath].frame;
@@ -186,7 +190,7 @@
     CGSize const componentSize = self.fullWidthComponent.preferredViewSize;
     self.componentLayoutManager.headerMarginsForLayoutTraits[self.fullWidthComponent.layoutTraits] = @(headerMargin);
     
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:YES];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:YES];
     
     NSIndexPath * const componentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     CGRect const componentViewFrame = [layout layoutAttributesForItemAtIndexPath:componentIndexPath].frame;
@@ -209,7 +213,7 @@
     CGSize const centeredComponentSize = self.centeredComponent.preferredViewSize;
     self.componentLayoutManager.contentEdgeMarginsForLayoutTraits[self.centeredComponent.layoutTraits] = @(bottomContentEdgeMargin);
     
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:NO];
     
     CGSize const expectedCollectionViewContentSize = CGSizeMake(
         self.collectionViewSize.width,
@@ -231,7 +235,7 @@
     self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentVerticalMargin);
     self.componentLayoutManager.contentEdgeMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentContentEdgeMargin);
 
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:NO];
 
     // H:|-15-[c1(100)][c2(100)][c3(100)]-15-|
     // but total width (330) > collectionView width (320) so component 3 have to be moved to a new row
@@ -258,7 +262,7 @@
     self.componentLayoutManager.verticalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(componentVerticalMargin);
     self.componentLayoutManager.horizontalComponentMarginsForLayoutTraits[self.compactComponent.layoutTraits] = @(CGFLOAT_MAX);
 
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:NO];
 
     // Check that the second component is on new row because it is not centered and the first one is
     NSIndexPath * const secondComponentIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
@@ -279,7 +283,7 @@
     NSArray *componentsLayoutTraits = @[self.centeredComponent.layoutTraits, self.centeredComponent.layoutTraits];
     self.componentLayoutManager.horizontalComponentOffsetsForArrayOfLayoutTraits[componentsLayoutTraits] = @(110);
 
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:NO];
 
     NSIndexPath * const componentIndexPath1 = [NSIndexPath indexPathForItem:0 inSection:0];
     CGRect const componentViewFrame1 = [layout layoutAttributesForItemAtIndexPath:componentIndexPath1].frame;
@@ -296,7 +300,7 @@
         [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier];
     }
 
-    HUBCollectionViewLayout * const layout = [self computeLayoutWithHeaderMargin:NO];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:YES];
 
     CGPoint const proposedOffset = CGPointMake(0.0, 1200.0);
     HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:proposedOffset].y, proposedOffset.y);
@@ -304,8 +308,7 @@
 
 - (void)testProposedContentOffsetForInitiallyAddedComponents
 {
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                 componentLayoutManager:self.componentLayoutManager];
+    UICollectionViewLayout * const layout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:YES];
     
     CGRect const collectionViewFrame = {.origin = CGPointZero, .size = self.collectionViewSize};
     HUBCollectionViewMock * const collectionView = [[HUBCollectionViewMock alloc] initWithFrame:collectionViewFrame
@@ -314,7 +317,9 @@
     collectionView.mockedIndexPathsForVisibleItems = @[];
     
     id<HUBViewModel> const viewModelA = [self.viewModelBuilder build];
-    [layout computeForCollectionViewSize:collectionViewFrame.size viewModel:viewModelA diff:nil addHeaderMargin:YES];
+    collectionView.collectionViewLayout = [self createLayoutWithDiff:nil
+                                                      previousLayout:collectionView.collectionViewLayout
+                                                     addHeaderMargin:YES];
     
     for (NSUInteger componentIndex = 0; componentIndex < 20; componentIndex++) {
         NSString * const componentIdentifier = [NSString stringWithFormat:@"%@", @(componentIndex)];
@@ -323,7 +328,9 @@
     
     id<HUBViewModel> const viewModelB = [self.viewModelBuilder build];
     HUBViewModelDiff * const diff = [HUBViewModelDiff diffFromViewModel:viewModelA toViewModel:viewModelB];
-    [layout computeForCollectionViewSize:collectionViewFrame.size viewModel:viewModelB diff:diff addHeaderMargin:YES];
+    collectionView.collectionViewLayout = [self createLayoutWithDiff:diff
+                                                      previousLayout:collectionView.collectionViewLayout
+                                                     addHeaderMargin:YES];
     
     CGPoint const targetContentOffset = [layout targetContentOffsetForProposedContentOffset:CGPointZero];
     XCTAssertTrue(CGPointEqualToPoint(targetContentOffset, CGPointZero));
@@ -336,14 +343,15 @@
     }
 
     id<HUBViewModel> const viewModel = [self.viewModelBuilder build];
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                 componentLayoutManager:self.componentLayoutManager];
+    UICollectionViewLayout * const originalLayout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:YES];
 
     CGRect const collectionViewFrame = {.origin = CGPointZero, .size = self.collectionViewSize};
     HUBCollectionViewMock * const collectionView = [[HUBCollectionViewMock alloc] initWithFrame:collectionViewFrame
-                                                                           collectionViewLayout:layout];
+                                                                           collectionViewLayout:originalLayout];
 
-    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:viewModel diff:nil addHeaderMargin:YES];
+    collectionView.collectionViewLayout = [self createLayoutWithDiff:nil
+                                                      previousLayout:collectionView.collectionViewLayout
+                                                     addHeaderMargin:YES];
 
     NSUInteger const currentIndex = 25;
     
@@ -376,28 +384,29 @@
     NSIndexPath * const topmostIndexPath = [NSIndexPath indexPathForItem:currentIndex inSection:0];
     collectionView.mockedIndexPathsForVisibleItems = @[topmostIndexPath];
     
-    UICollectionViewLayoutAttributes * const topmostAttribute = [layout layoutAttributesForItemAtIndexPath:topmostIndexPath];
+    UICollectionViewLayoutAttributes * const topmostAttribute = [collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:topmostIndexPath];
     CGPoint const contentOffset = CGPointMake(0.0, CGRectGetMinY(topmostAttribute.frame));
     collectionView.contentOffset = contentOffset;
 
-    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:newViewModel diff:diff addHeaderMargin:YES];
+    collectionView.collectionViewLayout = [self createLayoutWithDiff:diff
+                                                      previousLayout:collectionView.collectionViewLayout
+                                                     addHeaderMargin:YES];
 
     CGFloat expectedOffset = contentOffset.y - deletionHeight + insertionHeight;
     
-    HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:contentOffset].y, expectedOffset);
+    HUBAssertEqualFloatValues([collectionView.collectionViewLayout targetContentOffsetForProposedContentOffset:contentOffset].y,
+                              expectedOffset);
 }
 
 - (void)testProposedContentOffsetBeyondBounds
 {
     CGRect const collectionViewFrame = {.origin = CGPointZero, .size = self.collectionViewSize};
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                 componentLayoutManager:self.componentLayoutManager];
+    UICollectionViewLayout * const originalLayout = [self createLayoutWithDiff:nil previousLayout:nil addHeaderMargin:YES];
     HUBCollectionViewMock * const collectionView = [[HUBCollectionViewMock alloc] initWithFrame:collectionViewFrame
-                                                                           collectionViewLayout:layout];
+                                                                           collectionViewLayout:originalLayout];
     collectionView.contentInset = UIEdgeInsetsMake(27.0, 0.0, 34.0, 0.0);
 
     id<HUBViewModel> const firstViewModel = [self.viewModelBuilder build];
-    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:firstViewModel diff:nil addHeaderMargin:YES];
     
     for (NSUInteger i = 0; i < 10; i++) {
         [self addBodyComponentWithIdentifier:self.fullWidthComponentIdentifier preferredIndex:i];
@@ -408,10 +417,13 @@
     
     collectionView.mockedIndexPathsForVisibleItems = @[[NSIndexPath indexPathForItem:9 inSection:0]];
     collectionView.contentOffset = CGPointMake(0.0, 400.0);
-    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:secondViewModel diff:firstDiff addHeaderMargin:YES];
+    collectionView.collectionViewLayout = [self createLayoutWithDiff:firstDiff
+                                                      previousLayout:collectionView.collectionViewLayout
+                                                     addHeaderMargin:YES];
 
-    CGFloat expectedOffset = layout.collectionViewContentSize.height + collectionView.contentInset.bottom - self.collectionViewSize.height;
-    HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset);
+    CGFloat expectedOffset = collectionView.collectionViewLayout.collectionViewContentSize.height + collectionView.contentInset.bottom - self.collectionViewSize.height;
+    HUBAssertEqualFloatValues([collectionView.collectionViewLayout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y,
+                              expectedOffset);
     
     for (NSUInteger i = 0; i < 10; i++) {
         [self removeBodyComponentAtIndex:i];
@@ -422,10 +434,13 @@
 
     collectionView.mockedIndexPathsForVisibleItems = @[[NSIndexPath indexPathForItem:9 inSection:0]];
     collectionView.contentOffset = CGPointZero;
-    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:newViewModel diff:secondDiff addHeaderMargin:YES];
+    collectionView.collectionViewLayout = [self createLayoutWithDiff:secondDiff
+                                                      previousLayout:collectionView.collectionViewLayout
+                                                     addHeaderMargin:YES];
 
     expectedOffset = -collectionView.contentInset.top;
-    HUBAssertEqualFloatValues([layout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y, expectedOffset);
+    HUBAssertEqualFloatValues([collectionView.collectionViewLayout targetContentOffsetForProposedContentOffset:collectionView.contentOffset].y,
+                              expectedOffset);
 }
 
 #pragma mark - Utilities
@@ -456,15 +471,17 @@
     }
 }
 
-- (HUBCollectionViewLayout *)computeLayoutWithHeaderMargin:(BOOL)addHeaderMargin
+- (UICollectionViewLayout *)createLayoutWithDiff:(nullable HUBViewModelDiff *)diff
+                                  previousLayout:(nullable UICollectionViewLayout *)previousLayout
+                                 addHeaderMargin:(BOOL)addHeaderMargin
 {
     id<HUBViewModel> const viewModel = [self.viewModelBuilder build];
-    HUBCollectionViewLayout * const layout = [[HUBCollectionViewLayout alloc] initWithComponentRegistry:self.componentRegistry
-                                                                                 componentLayoutManager:self.componentLayoutManager];
     
-    [layout computeForCollectionViewSize:self.collectionViewSize viewModel:viewModel diff:nil addHeaderMargin:addHeaderMargin];
-    
-    return layout;
+    return [self.layoutFactory createLayoutForCollectionViewWithSize:self.collectionViewSize
+                                                           viewModel:viewModel
+                                                                diff:diff
+                                                      previousLayout:previousLayout
+                                                     addHeaderMargin:addHeaderMargin];
 }
 
 @end

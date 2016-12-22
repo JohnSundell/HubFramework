@@ -31,6 +31,7 @@
 #import "HUBJSONSchemaImplementation.h"
 #import "HUBConnectivityStateResolverMock.h"
 #import "HUBImageLoaderMock.h"
+#import "HUBViewModel.h"
 #import "HUBViewModelBuilder.h"
 #import "HUBViewModelRendererMock.h"
 #import "HUBComponentModelBuilder.h"
@@ -43,6 +44,7 @@
 #import "HUBComponentWrapper.h"
 #import "HUBCollectionViewFactoryMock.h"
 #import "HUBCollectionViewMock.h"
+#import "HUBCollectionViewLayoutFactory.h"
 #import "HUBComponentLayoutManagerMock.h"
 #import "HUBActionHandlerMock.h"
 #import "HUBInitialViewModelRegistry.h"
@@ -155,7 +157,11 @@
                                                                    iconImageResolver:iconImageResolver
                                                                     initialViewModel:nil];
     
-    self.viewModelRenderer = [HUBViewModelRenderer new];
+    HUBComponentLayoutManagerMock * const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    HUBCollectionViewLayoutFactory * const collectionViewLayoutFactory = [[HUBCollectionViewLayoutFactory alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                                    componentLayoutManager:componentLayoutManager];
+    
+    self.viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionViewLayoutFactory:collectionViewLayoutFactory];
     self.imageLoader = [HUBImageLoaderMock new];
     
     self.initialViewModelRegistry = [HUBInitialViewModelRegistry new];
@@ -3043,7 +3049,11 @@
 
 - (void)testThatModelIsSetImmediatelyOnInitialRenderRequest
 {
-    HUBViewModelRendererMock *viewModelRenderer = [HUBViewModelRendererMock new];
+    HUBComponentLayoutManagerMock * const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    HUBCollectionViewLayoutFactory * const collectionViewLayoutFactory = [[HUBCollectionViewLayoutFactory alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                                    componentLayoutManager:componentLayoutManager];
+    
+    HUBViewModelRendererMock *viewModelRenderer = [[HUBViewModelRendererMock alloc] initWithCollectionViewLayoutFactory:collectionViewLayoutFactory];
     [self createViewControllerWithViewModelRenderer:viewModelRenderer];
 
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {
@@ -3065,7 +3075,11 @@
 
 - (void)testThatModelIsNotSetImmediatelyOnOverlappingRenderRequests
 {
-    HUBViewModelRendererMock *viewModelRenderer = [HUBViewModelRendererMock new];
+    HUBComponentLayoutManagerMock * const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    HUBCollectionViewLayoutFactory * const collectionViewLayoutFactory = [[HUBCollectionViewLayoutFactory alloc] initWithComponentRegistry:self.componentRegistry
+                                                                                                                    componentLayoutManager:componentLayoutManager];
+    
+    HUBViewModelRendererMock *viewModelRenderer = [[HUBViewModelRendererMock alloc] initWithCollectionViewLayoutFactory:collectionViewLayoutFactory];
     [self createViewControllerWithViewModelRenderer:viewModelRenderer];
 
     self.contentOperation.contentLoadingBlock = ^(id<HUBViewModelBuilder> viewModelBuilder) {

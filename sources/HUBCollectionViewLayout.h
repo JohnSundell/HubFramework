@@ -22,9 +22,6 @@
 #import <UIKit/UIKit.h>
 #import "HUBHeaderMacros.h"
 
-@protocol HUBViewModel;
-@protocol HUBComponentLayoutManager;
-@protocol HUBComponentRegistry;
 @class HUBViewModelDiff;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,26 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Layout object used by collection views within the Hub Framework
 @interface HUBCollectionViewLayout : UICollectionViewLayout
 
-/**
- *  Initialize an instance of this class with its required dependencies
- *
- *  @param componentRegistry The registry to use to retrieve components for calculations
- *  @param componentLayoutManager The manager responsible for component layout
- */
-- (instancetype)initWithComponentRegistry:(id<HUBComponentRegistry>)componentRegistry
-                   componentLayoutManager:(id<HUBComponentLayoutManager>)componentLayoutManager HUB_DESIGNATED_INITIALIZER;
-/**
- *  Compute this layout for a given collection view size
- *
- *  @param collectionViewSize The size of the collection view that will use this layout
- *  @param viewModel The view model used to compute the layout with
- *  @param diff The diff between the previous and current data model
- *  @param addHeaderMargin Whether margin should be added to account for any header component
- */
-- (void)computeForCollectionViewSize:(CGSize)collectionViewSize
-                           viewModel:(id<HUBViewModel>)viewModel
-                                diff:(nullable HUBViewModelDiff *)diff
-                     addHeaderMargin:(BOOL)addHeaderMargin;
+- (instancetype)initWithLayoutAttributes:(NSDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *)layoutAttributes
+                             contentSize:(CGSize)contentSize
+                          previousLayout:(nullable UICollectionViewLayout *)previousLayout
+                                    diff:(nullable HUBViewModelDiff *)diff HUB_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -21,12 +21,12 @@
 
 #import <XCTest/XCTest.h>
 
-#import "HUBCollectionViewLayoutMock.h"
 #import "HUBCollectionViewMock.h"
+#import "HUBComponentRegistryMock.h"
 #import "HUBComponentLayoutManagerMock.h"
-#import "HUBViewModelDiff.h"
 #import "HUBViewModelRenderer.h"
 #import "HUBViewModelUtilities.h"
+#import "HUBCollectionViewLayoutFactory.h"
 
 /**
  *  We don't want these tests to be concerned with the inner workings of the batch update process, as this invokes
@@ -37,20 +37,46 @@
  */
 @interface HUBCollectionViewMockWithoutBatchUpdates : HUBCollectionViewMock
 
+@property (nonatomic, assign) NSUInteger reloadDataCount;
+@property (nonatomic, strong, readonly) NSMutableArray<NSIndexPath *> *insertedItemIndexPaths;
+@property (nonatomic, strong, readonly) NSMutableArray<NSIndexPath *> *deletedItemIndexPaths;
+@property (nonatomic, strong, readonly) NSMutableArray<NSIndexPath *> *reloadedItemIndexPaths;
+
 @end
 
 @implementation HUBCollectionViewMockWithoutBatchUpdates
 
+- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
+{
+    self = [super initWithFrame:frame collectionViewLayout:layout];
+    
+    if (self) {
+        _insertedItemIndexPaths = [NSMutableArray new];
+        _deletedItemIndexPaths = [NSMutableArray new];
+        _reloadedItemIndexPaths = [NSMutableArray new];
+    }
+    
+    return self;
+}
+
+- (void)reloadData
+{
+    self.reloadDataCount += 1;
+}
+
 - (void)insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+    [self.insertedItemIndexPaths addObjectsFromArray:indexPaths];
 }
 
 - (void)deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+    [self.deletedItemIndexPaths addObjectsFromArray:indexPaths];
 }
 
 - (void)reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+    [self.reloadedItemIndexPaths addObjectsFromArray:indexPaths];
 }
 
 @end
@@ -58,7 +84,6 @@
 @interface HUBViewModelRendererTests : XCTestCase
 
 @property (nonatomic, strong) HUBCollectionViewMockWithoutBatchUpdates *collectionView;
-@property (nonatomic, strong) HUBCollectionViewLayoutMock *collectionViewLayout;
 @property (nonatomic, strong) HUBViewModelRenderer *viewModelRenderer;
 
 @end
@@ -69,16 +94,20 @@
 {
     [super setUp];
 
-    self.collectionView = [HUBCollectionViewMockWithoutBatchUpdates new];
-    self.collectionViewLayout = [[HUBCollectionViewLayoutMock alloc] init];
-    self.collectionView.collectionViewLayout = self.collectionViewLayout;
-    self.viewModelRenderer = [HUBViewModelRenderer new];
+    self.collectionView = [[HUBCollectionViewMockWithoutBatchUpdates alloc] initWithFrame:CGRectZero
+                                                                     collectionViewLayout:[UICollectionViewFlowLayout new]];
+    
+    id<HUBComponentRegistry> const componentRegistry = [HUBComponentRegistryMock new];
+    id<HUBComponentLayoutManager> const componentLayoutManager = [HUBComponentLayoutManagerMock new];
+    HUBCollectionViewLayoutFactory * const collectionViewLayoutFactory = [[HUBCollectionViewLayoutFactory alloc] initWithComponentRegistry:componentRegistry
+                                                                                                                    componentLayoutManager:componentLayoutManager];
+    
+    self.viewModelRenderer = [[HUBViewModelRenderer alloc] initWithCollectionViewLayoutFactory:collectionViewLayoutFactory];
 }
 
 - (void)tearDown
 {
     self.collectionView = nil;
-    self.collectionViewLayout = nil;
     self.viewModelRenderer = nil;
 
     [super tearDown];
@@ -86,41 +115,36 @@
 
 - (void)testTwoSubsequentRenders
 {
-    NSArray<id<HUBComponentModel>> *firstComponents = @[
+    NSArray<id<HUBComponentModel>> * const firstComponents = @[
         [HUBViewModelUtilities createComponentModelWithIdentifier:@"component-1" customData:nil],
     ];
-    id<HUBViewModel> firstViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" components:firstComponents];
+    id<HUBViewModel> const firstViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test" components:firstComponents];
 
-    NSArray<id<HUBComponentModel>> *secondComponents = @[
+    NSArray<id<HUBComponentModel>> * const secondComponents = @[
         [HUBViewModelUtilities createComponentModelWithIdentifier:@"component-2" customData:nil],
     ];
-    id<HUBViewModel> secondViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test2" components:secondComponents];
+    id<HUBViewModel> const secondViewModel = [HUBViewModelUtilities createViewModelWithIdentifier:@"Test2" components:secondComponents];
 
     __weak XCTestExpectation * const expectation = [self expectationWithDescription:@"Waiting for render"];
 
     [self.viewModelRenderer renderViewModel:firstViewModel inCollectionView:self.collectionView usingBatchUpdates:YES animated:YES addHeaderMargin:YES completion:^{
-        // Immediately trigger another render.
+        // On the first render, we expect the collection view to be reloaded
+        XCTAssertEqual(self.collectionView.reloadDataCount, 1u);
+        XCTAssertEqualObjects(self.collectionView.insertedItemIndexPaths, @[]);
+        XCTAssertEqualObjects(self.collectionView.deletedItemIndexPaths, @[]);
+        XCTAssertEqualObjects(self.collectionView.reloadedItemIndexPaths, @[]);
+        
         [self.viewModelRenderer renderViewModel:secondViewModel inCollectionView:self.collectionView usingBatchUpdates:YES animated:YES addHeaderMargin:YES completion:^{
+            XCTAssertEqual(self.collectionView.reloadDataCount, 1u);
+            XCTAssertEqualObjects(self.collectionView.insertedItemIndexPaths, @[[NSIndexPath indexPathForItem:0 inSection:0]]);
+            XCTAssertEqualObjects(self.collectionView.deletedItemIndexPaths, @[[NSIndexPath indexPathForItem:0 inSection:0]]);
+            XCTAssertEqualObjects(self.collectionView.reloadedItemIndexPaths, @[]);
+            
             [expectation fulfill];
         }];
     }];
 
     [self waitForExpectationsWithTimeout:2 handler:nil];
-
-    XCTAssertEqual([self.collectionViewLayout numberOfInvocations], 2u);
-    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelAtIndex:0], firstViewModel);
-    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelAtIndex:1], secondViewModel);
-
-    XCTAssertEqual([self.collectionViewLayout numberOfInvocations], 2u);
-    // The first invocation shouldn't generate a diff.
-    XCTAssertEqualObjects([self.collectionViewLayout capturedViewModelDiffAtIndex:0], [NSNull null]);
-    // The second invocation should generate a diff.
-    HUBViewModelDiff *diff = [self.collectionViewLayout capturedViewModelDiffAtIndex:1];
-    XCTAssertNotEqualObjects(diff, [NSNull null]);
-
-    XCTAssertEqual(diff.insertedBodyComponentIndexPaths.count, 1u);
-    XCTAssertEqual(diff.deletedBodyComponentIndexPaths.count, 1u);
-    XCTAssertEqual(diff.reloadedBodyComponentIndexPaths.count, 0u);
 }
 
 @end
